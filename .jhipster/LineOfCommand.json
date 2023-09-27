@@ -1,0 +1,60 @@
+{
+  "applications": "*",
+  "changelogDate": "20230927164809",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "line_of_command",
+  "fields": [
+    {
+      "fieldName": "quantity",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "unitPrice",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required", "min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "updated",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "updatedBy",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LineOfCommand",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "product",
+      "relationshipName": "product",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "panier",
+      "otherEntityRelationshipName": "linesCommand",
+      "relationshipName": "panier",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "command",
+      "otherEntityRelationshipName": "linesCommand",
+      "relationshipName": "command",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}

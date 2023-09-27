@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <!--
+        Added the constraints for entity LineOfCommand.
+    -->
+    <changeSet id="20230927164809-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="product_id"
+                                 baseTableName="line_of_command"
+                                 constraintName="fk_line_of_command__product_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="product"/>
+
+        <addForeignKeyConstraint baseColumnNames="panier_id"
+                                 baseTableName="line_of_command"
+                                 constraintName="fk_line_of_command__panier_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="panier"/>
+
+        <addForeignKeyConstraint baseColumnNames="command_id"
+                                 baseTableName="line_of_command"
+                                 constraintName="fk_line_of_command__command_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="command"/>
+    </changeSet>
+</databaseChangeLog>

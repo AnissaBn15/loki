@@ -1,0 +1,146 @@
+{
+  "applications": "*",
+  "changelogDate": "20230927164812",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "product",
+  "fields": [
+    {
+      "fieldName": "reference",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "3000"
+    },
+    {
+      "fieldName": "productStatus",
+      "fieldType": "ProductStatus",
+      "fieldValues": "DRAFT,VALIDATED,TO_BE_DELIVERED,DELIVERED,CANCELED"
+    },
+    {
+      "fieldName": "active",
+      "fieldType": "Boolean",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "quantityInStock",
+      "fieldType": "Double",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nbrOfSells",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "minimalQuantity",
+      "fieldType": "Double",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "maximalQuantity",
+      "fieldType": "Double",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "weightedAveragePrice",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["min"],
+      "fieldValidateRulesMin": "0"
+    },
+    {
+      "fieldName": "location",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "consumptionDeadline",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "barCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "serialNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "brand",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "model",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "section",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "hallway",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "productDisplay",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "locker",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "productCode",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "updated",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "updatedBy",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Product",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "fournisseur",
+      "otherEntityRelationshipName": "products",
+      "relationshipName": "fournisseur",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "productCategory",
+      "otherEntityRelationshipName": "products",
+      "relationshipName": "productCategory",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "image",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "images",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "service": "serviceClass"
+}

@@ -1,0 +1,161 @@
+MIN_LENGTH_FIELD_NAME = 1
+MAX_LENGTH_FIELD_NAME = 255
+
+enum Role {
+  CLIENT, FOURNISSEUR, ADMIN
+}
+
+enum PanierStatus {
+  VALIDE, EN_COURS, ANNULE
+}
+
+enum CommandStatus {
+  EN_ATTENTE_PAIEMENT, PAIEMENT_ACCEPTE, EN_PREPARATION, EXPEDIEE, LIVREE, ANNULEE
+}
+enum ClientType {
+	PROFESSIONAL, PARTICULAR
+}
+
+enum ProductStatus {
+    DRAFT, VALIDATED, TO_BE_DELIVERED, DELIVERED, CANCELED
+}
+
+enum StatusPaiement {
+  EN_ATTENTE, ACCEPTE, REFUSE, ANNULE
+}
+
+entity Client {
+    code String required
+    type ClientType required
+    active Boolean required
+    firstName String minlength(MIN_LENGTH_FIELD_NAME) maxlength(MAX_LENGTH_FIELD_NAME)
+    lastName String minlength(MIN_LENGTH_FIELD_NAME) maxlength(MAX_LENGTH_FIELD_NAME)
+    bankAccountNumber String
+    email String
+    role Role
+    address String
+    country String required
+    created ZonedDateTime
+    createdBy String
+    updated ZonedDateTime
+    updatedBy String
+}
+
+entity Fournisseur {
+    code String required
+    active Boolean required
+    company String
+    firstName String minlength(MIN_LENGTH_FIELD_NAME) maxlength(MAX_LENGTH_FIELD_NAME)
+    lastName String minlength(MIN_LENGTH_FIELD_NAME) maxlength(MAX_LENGTH_FIELD_NAME)
+    bankAccountNumber String
+    email String
+    role Role
+    address String
+    country String required
+    created ZonedDateTime
+    createdBy String
+    updated ZonedDateTime
+    updatedBy String
+}
+
+entity Command {
+  commandNumber String unique
+  status CommandStatus
+  total BigDecimal
+  created ZonedDateTime
+  createdBy String
+  updated ZonedDateTime
+  updatedBy String
+}
+
+entity LineOfCommand {
+  quantity Integer
+  unitPrice BigDecimal required min(0)
+  created ZonedDateTime
+  createdBy String
+  updated ZonedDateTime
+  updatedBy String
+  }
+
+entity Panier {
+  status PanierStatus
+  created ZonedDateTime
+  createdBy String
+  updated ZonedDateTime
+  updatedBy String
+}
+
+entity Paiement {
+  id Long,
+  total BigDecimal,
+  status StatusPaiement
+  created ZonedDateTime
+  createdBy String
+  updated ZonedDateTime
+  updatedBy String
+}
+
+entity Product {
+    reference String
+    name String
+    description String maxlength(3000)
+    productStatus ProductStatus
+    active Boolean required
+    quantityInStock Double required
+    nbrOfSells Integer
+    minimalQuantity Double min(0)
+    maximalQuantity Double min(0)
+    weightedAveragePrice BigDecimal min(0)
+    location String
+    consumptionDeadline LocalDate
+    barCode String
+    serialNumber String
+    brand String
+    model String
+    section String
+    hallway String
+    productDisplay String
+    locker String
+    productCode String
+    created ZonedDateTime
+    createdBy String
+    updated ZonedDateTime
+    updatedBy String
+}
+
+entity Image {
+imagePath String
+created ZonedDateTime
+createdBy String
+updated ZonedDateTime
+updatedBy String
+}
+
+entity ProductCategory {
+    name String
+    created ZonedDateTime
+    createdBy String
+}
+
+relationship OneToMany {
+  Client{paniers} to Panier{client},
+  Panier{linesCommand} to LineOfCommand{panier},
+  Client{commands} to Command{client},
+  Fournisseur{commands} to Command{fournisseur},
+  Fournisseur{paiements} to Paiement{fournisseur}
+  Command{linesCommand} to LineOfCommand{command},
+  Fournisseur{products} to Product{fournisseur}
+  ProductCategory{products} to Product{productCategory}
+}
+
+relationship OneToOne {
+  Paiement{command} to Command{paiement}
+}
+
+relationship ManyToOne {
+  Image{product} to Product{images}
+  LineOfCommand{product} to Product
+}
+dto * with mapstruct
+service * with serviceClass
+paginate * with pagination

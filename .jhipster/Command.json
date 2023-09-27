@@ -1,0 +1,72 @@
+{
+  "applications": "*",
+  "changelogDate": "20230927164808",
+  "dto": "mapstruct",
+  "embedded": false,
+  "entityTableName": "command",
+  "fields": [
+    {
+      "fieldName": "commandNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["unique"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "CommandStatus",
+      "fieldValues": "EN_ATTENTE_PAIEMENT,PAIEMENT_ACCEPTE,EN_PREPARATION,EXPEDIEE,LIVREE,ANNULEE"
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "created",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "createdBy",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "updated",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "updatedBy",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Command",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [
+    {
+      "otherEntityName": "lineOfCommand",
+      "otherEntityRelationshipName": "command",
+      "relationshipName": "linesCommand",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "paiement",
+      "otherEntityRelationshipName": "command",
+      "ownerSide": false,
+      "relationshipName": "paiement",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "commands",
+      "relationshipName": "client",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "fournisseur",
+      "otherEntityRelationshipName": "commands",
+      "relationshipName": "fournisseur",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "service": "serviceClass"
+}
