@@ -1,5 +1,6 @@
 package com.loki.web.rest;
 
+import com.loki.domain.Product;
 import com.loki.repository.ProductRepository;
 import com.loki.service.ProductService;
 import com.loki.service.dto.ProductDTO;
@@ -102,6 +103,12 @@ public class ProductResource {
             .body(result);
     }
 
+    @GetMapping("/best-selling")
+    public ResponseEntity<List<ProductDTO>> getBestSellingProducts(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        Page<ProductDTO> products = productService.getBestSellingProducts(pageable);
+        return ResponseEntity.ok().body(products.getContent());
+    }
+
     /**
      * {@code PATCH  /products/:id} : Partial updates given fields of an existing product, field will ignore if it is null
      *
@@ -136,6 +143,11 @@ public class ProductResource {
             result,
             HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, productDTO.getId().toString())
         );
+    }
+    @GetMapping("/products/{search}")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@org.springdoc.api.annotations.ParameterObject Pageable pageable, @PathVariable String search) {
+        Page<ProductDTO> produits = productService.getProductsByCategory(pageable, search);
+        return ResponseEntity.ok().body(produits.getContent());
     }
 
     /**
