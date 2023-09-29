@@ -10,12 +10,6 @@
       "fieldType": "Integer"
     },
     {
-      "fieldName": "unitPrice",
-      "fieldType": "BigDecimal",
-      "fieldValidateRules": ["required", "min"],
-      "fieldValidateRulesMin": "0"
-    },
-    {
       "fieldName": "created",
       "fieldType": "ZonedDateTime"
     },

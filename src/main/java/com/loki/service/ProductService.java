@@ -4,8 +4,6 @@ import com.loki.domain.Product;
 import com.loki.repository.ProductRepository;
 import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.ProductMapper;
-
-import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +76,6 @@ public class ProductService {
             .map(productMapper::toDto);
     }
 
-    public Page<ProductDTO> getProductsByCategory(Pageable pageable, String search) {
         return productRepository.findProduitCategorie(pageable, search).map(productMapper::toDto);
     }
 

@@ -2,10 +2,8 @@ package com.loki.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 /**
  * A LineOfCommand.
@@ -26,11 +24,6 @@ public class LineOfCommand implements Serializable {
     @Column(name = "quantity")
     private Integer quantity;
 
-    @NotNull
-    @DecimalMin(value = "0")
-    @Column(name = "unit_price", precision = 21, scale = 2, nullable = false)
-    private BigDecimal unitPrice;
-
     @Column(name = "created")
     private ZonedDateTime created;
 
@@ -44,7 +37,7 @@ public class LineOfCommand implements Serializable {
     private String updatedBy;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "fournisseur", "productCategory" }, allowSetters = true)
     private Product product;
 
     @ManyToOne
@@ -81,19 +74,6 @@ public class LineOfCommand implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return this.unitPrice;
-    }
-
-    public LineOfCommand unitPrice(BigDecimal unitPrice) {
-        this.setUnitPrice(unitPrice);
-        return this;
-    }
-
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
     }
 
     public ZonedDateTime getCreated() {
@@ -212,7 +192,6 @@ public class LineOfCommand implements Serializable {
         return "LineOfCommand{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
-            ", unitPrice=" + getUnitPrice() +
             ", created='" + getCreated() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", updated='" + getUpdated() + "'" +

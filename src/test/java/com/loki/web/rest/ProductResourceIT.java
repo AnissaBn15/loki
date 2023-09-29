@@ -61,6 +61,9 @@ class ProductResourceIT {
     private static final Integer DEFAULT_NBR_OF_SELLS = 1;
     private static final Integer UPDATED_NBR_OF_SELLS = 2;
 
+    private static final String DEFAULT_IMAGE_PATH = "AAAAAAAAAA";
+    private static final String UPDATED_IMAGE_PATH = "BBBBBBBBBB";
+
     private static final Double DEFAULT_MINIMAL_QUANTITY = 0D;
     private static final Double UPDATED_MINIMAL_QUANTITY = 1D;
 
@@ -150,6 +153,7 @@ class ProductResourceIT {
             .active(DEFAULT_ACTIVE)
             .quantityInStock(DEFAULT_QUANTITY_IN_STOCK)
             .nbrOfSells(DEFAULT_NBR_OF_SELLS)
+            .imagePath(DEFAULT_IMAGE_PATH)
             .minimalQuantity(DEFAULT_MINIMAL_QUANTITY)
             .maximalQuantity(DEFAULT_MAXIMAL_QUANTITY)
             .weightedAveragePrice(DEFAULT_WEIGHTED_AVERAGE_PRICE)
@@ -186,6 +190,7 @@ class ProductResourceIT {
             .active(UPDATED_ACTIVE)
             .quantityInStock(UPDATED_QUANTITY_IN_STOCK)
             .nbrOfSells(UPDATED_NBR_OF_SELLS)
+            .imagePath(UPDATED_IMAGE_PATH)
             .minimalQuantity(UPDATED_MINIMAL_QUANTITY)
             .maximalQuantity(UPDATED_MAXIMAL_QUANTITY)
             .weightedAveragePrice(UPDATED_WEIGHTED_AVERAGE_PRICE)
@@ -233,6 +238,7 @@ class ProductResourceIT {
         assertThat(testProduct.getActive()).isEqualTo(DEFAULT_ACTIVE);
         assertThat(testProduct.getQuantityInStock()).isEqualTo(DEFAULT_QUANTITY_IN_STOCK);
         assertThat(testProduct.getNbrOfSells()).isEqualTo(DEFAULT_NBR_OF_SELLS);
+        assertThat(testProduct.getImagePath()).isEqualTo(DEFAULT_IMAGE_PATH);
         assertThat(testProduct.getMinimalQuantity()).isEqualTo(DEFAULT_MINIMAL_QUANTITY);
         assertThat(testProduct.getMaximalQuantity()).isEqualTo(DEFAULT_MAXIMAL_QUANTITY);
         assertThat(testProduct.getWeightedAveragePrice()).isEqualByComparingTo(DEFAULT_WEIGHTED_AVERAGE_PRICE);
@@ -327,6 +333,7 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.[*].active").value(hasItem(DEFAULT_ACTIVE.booleanValue())))
             .andExpect(jsonPath("$.[*].quantityInStock").value(hasItem(DEFAULT_QUANTITY_IN_STOCK.doubleValue())))
             .andExpect(jsonPath("$.[*].nbrOfSells").value(hasItem(DEFAULT_NBR_OF_SELLS)))
+            .andExpect(jsonPath("$.[*].imagePath").value(hasItem(DEFAULT_IMAGE_PATH)))
             .andExpect(jsonPath("$.[*].minimalQuantity").value(hasItem(DEFAULT_MINIMAL_QUANTITY.doubleValue())))
             .andExpect(jsonPath("$.[*].maximalQuantity").value(hasItem(DEFAULT_MAXIMAL_QUANTITY.doubleValue())))
             .andExpect(jsonPath("$.[*].weightedAveragePrice").value(hasItem(sameNumber(DEFAULT_WEIGHTED_AVERAGE_PRICE))))
@@ -366,6 +373,7 @@ class ProductResourceIT {
             .andExpect(jsonPath("$.active").value(DEFAULT_ACTIVE.booleanValue()))
             .andExpect(jsonPath("$.quantityInStock").value(DEFAULT_QUANTITY_IN_STOCK.doubleValue()))
             .andExpect(jsonPath("$.nbrOfSells").value(DEFAULT_NBR_OF_SELLS))
+            .andExpect(jsonPath("$.imagePath").value(DEFAULT_IMAGE_PATH))
             .andExpect(jsonPath("$.minimalQuantity").value(DEFAULT_MINIMAL_QUANTITY.doubleValue()))
             .andExpect(jsonPath("$.maximalQuantity").value(DEFAULT_MAXIMAL_QUANTITY.doubleValue()))
             .andExpect(jsonPath("$.weightedAveragePrice").value(sameNumber(DEFAULT_WEIGHTED_AVERAGE_PRICE)))
@@ -413,6 +421,7 @@ class ProductResourceIT {
             .active(UPDATED_ACTIVE)
             .quantityInStock(UPDATED_QUANTITY_IN_STOCK)
             .nbrOfSells(UPDATED_NBR_OF_SELLS)
+            .imagePath(UPDATED_IMAGE_PATH)
             .minimalQuantity(UPDATED_MINIMAL_QUANTITY)
             .maximalQuantity(UPDATED_MAXIMAL_QUANTITY)
             .weightedAveragePrice(UPDATED_WEIGHTED_AVERAGE_PRICE)
@@ -452,6 +461,7 @@ class ProductResourceIT {
         assertThat(testProduct.getActive()).isEqualTo(UPDATED_ACTIVE);
         assertThat(testProduct.getQuantityInStock()).isEqualTo(UPDATED_QUANTITY_IN_STOCK);
         assertThat(testProduct.getNbrOfSells()).isEqualTo(UPDATED_NBR_OF_SELLS);
+        assertThat(testProduct.getImagePath()).isEqualTo(UPDATED_IMAGE_PATH);
         assertThat(testProduct.getMinimalQuantity()).isEqualTo(UPDATED_MINIMAL_QUANTITY);
         assertThat(testProduct.getMaximalQuantity()).isEqualTo(UPDATED_MAXIMAL_QUANTITY);
         assertThat(testProduct.getWeightedAveragePrice()).isEqualByComparingTo(UPDATED_WEIGHTED_AVERAGE_PRICE);
@@ -552,13 +562,14 @@ class ProductResourceIT {
         partialUpdatedProduct
             .active(UPDATED_ACTIVE)
             .quantityInStock(UPDATED_QUANTITY_IN_STOCK)
-            .location(UPDATED_LOCATION)
-            .serialNumber(UPDATED_SERIAL_NUMBER)
+            .weightedAveragePrice(UPDATED_WEIGHTED_AVERAGE_PRICE)
+            .barCode(UPDATED_BAR_CODE)
+            .section(UPDATED_SECTION)
             .hallway(UPDATED_HALLWAY)
             .productDisplay(UPDATED_PRODUCT_DISPLAY)
-            .locker(UPDATED_LOCKER)
-            .created(UPDATED_CREATED)
-            .updated(UPDATED_UPDATED);
+            .productCode(UPDATED_PRODUCT_CODE)
+            .createdBy(UPDATED_CREATED_BY)
+            .updatedBy(UPDATED_UPDATED_BY);
 
         restProductMockMvc
             .perform(
@@ -579,24 +590,25 @@ class ProductResourceIT {
         assertThat(testProduct.getActive()).isEqualTo(UPDATED_ACTIVE);
         assertThat(testProduct.getQuantityInStock()).isEqualTo(UPDATED_QUANTITY_IN_STOCK);
         assertThat(testProduct.getNbrOfSells()).isEqualTo(DEFAULT_NBR_OF_SELLS);
+        assertThat(testProduct.getImagePath()).isEqualTo(DEFAULT_IMAGE_PATH);
         assertThat(testProduct.getMinimalQuantity()).isEqualTo(DEFAULT_MINIMAL_QUANTITY);
         assertThat(testProduct.getMaximalQuantity()).isEqualTo(DEFAULT_MAXIMAL_QUANTITY);
-        assertThat(testProduct.getWeightedAveragePrice()).isEqualByComparingTo(DEFAULT_WEIGHTED_AVERAGE_PRICE);
-        assertThat(testProduct.getLocation()).isEqualTo(UPDATED_LOCATION);
+        assertThat(testProduct.getWeightedAveragePrice()).isEqualByComparingTo(UPDATED_WEIGHTED_AVERAGE_PRICE);
+        assertThat(testProduct.getLocation()).isEqualTo(DEFAULT_LOCATION);
         assertThat(testProduct.getConsumptionDeadline()).isEqualTo(DEFAULT_CONSUMPTION_DEADLINE);
-        assertThat(testProduct.getBarCode()).isEqualTo(DEFAULT_BAR_CODE);
-        assertThat(testProduct.getSerialNumber()).isEqualTo(UPDATED_SERIAL_NUMBER);
+        assertThat(testProduct.getBarCode()).isEqualTo(UPDATED_BAR_CODE);
+        assertThat(testProduct.getSerialNumber()).isEqualTo(DEFAULT_SERIAL_NUMBER);
         assertThat(testProduct.getBrand()).isEqualTo(DEFAULT_BRAND);
         assertThat(testProduct.getModel()).isEqualTo(DEFAULT_MODEL);
-        assertThat(testProduct.getSection()).isEqualTo(DEFAULT_SECTION);
+        assertThat(testProduct.getSection()).isEqualTo(UPDATED_SECTION);
         assertThat(testProduct.getHallway()).isEqualTo(UPDATED_HALLWAY);
         assertThat(testProduct.getProductDisplay()).isEqualTo(UPDATED_PRODUCT_DISPLAY);
-        assertThat(testProduct.getLocker()).isEqualTo(UPDATED_LOCKER);
-        assertThat(testProduct.getProductCode()).isEqualTo(DEFAULT_PRODUCT_CODE);
-        assertThat(testProduct.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testProduct.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
-        assertThat(testProduct.getUpdated()).isEqualTo(UPDATED_UPDATED);
-        assertThat(testProduct.getUpdatedBy()).isEqualTo(DEFAULT_UPDATED_BY);
+        assertThat(testProduct.getLocker()).isEqualTo(DEFAULT_LOCKER);
+        assertThat(testProduct.getProductCode()).isEqualTo(UPDATED_PRODUCT_CODE);
+        assertThat(testProduct.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testProduct.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
+        assertThat(testProduct.getUpdated()).isEqualTo(DEFAULT_UPDATED);
+        assertThat(testProduct.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);
     }
 
     @Test
@@ -619,6 +631,7 @@ class ProductResourceIT {
             .active(UPDATED_ACTIVE)
             .quantityInStock(UPDATED_QUANTITY_IN_STOCK)
             .nbrOfSells(UPDATED_NBR_OF_SELLS)
+            .imagePath(UPDATED_IMAGE_PATH)
             .minimalQuantity(UPDATED_MINIMAL_QUANTITY)
             .maximalQuantity(UPDATED_MAXIMAL_QUANTITY)
             .weightedAveragePrice(UPDATED_WEIGHTED_AVERAGE_PRICE)
@@ -657,6 +670,7 @@ class ProductResourceIT {
         assertThat(testProduct.getActive()).isEqualTo(UPDATED_ACTIVE);
         assertThat(testProduct.getQuantityInStock()).isEqualTo(UPDATED_QUANTITY_IN_STOCK);
         assertThat(testProduct.getNbrOfSells()).isEqualTo(UPDATED_NBR_OF_SELLS);
+        assertThat(testProduct.getImagePath()).isEqualTo(UPDATED_IMAGE_PATH);
         assertThat(testProduct.getMinimalQuantity()).isEqualTo(UPDATED_MINIMAL_QUANTITY);
         assertThat(testProduct.getMaximalQuantity()).isEqualTo(UPDATED_MAXIMAL_QUANTITY);
         assertThat(testProduct.getWeightedAveragePrice()).isEqualByComparingTo(UPDATED_WEIGHTED_AVERAGE_PRICE);

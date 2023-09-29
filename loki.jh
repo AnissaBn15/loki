@@ -70,7 +70,6 @@ entity Command {
 
 entity LineOfCommand {
   quantity Integer
-  unitPrice BigDecimal required min(0)
   created ZonedDateTime
   createdBy String
   updated ZonedDateTime
@@ -103,6 +102,7 @@ entity Product {
     active Boolean required
     quantityInStock Double required
     nbrOfSells Integer
+    imagePath String
     minimalQuantity Double min(0)
     maximalQuantity Double min(0)
     weightedAveragePrice BigDecimal min(0)
@@ -121,14 +121,6 @@ entity Product {
     createdBy String
     updated ZonedDateTime
     updatedBy String
-}
-
-entity Image {
-imagePath String
-created ZonedDateTime
-createdBy String
-updated ZonedDateTime
-updatedBy String
 }
 
 entity ProductCategory {
@@ -153,7 +145,6 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-  Image{product} to Product{images}
   LineOfCommand{product} to Product
 }
 dto * with mapstruct

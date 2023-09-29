@@ -35,6 +35,9 @@
             <column name="nbr_of_sells" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="image_path" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
             <column name="minimal_quantity" type="double">
                 <constraints nullable="true" />
             </column>
@@ -125,6 +128,7 @@
             <column name="active" type="boolean"/>
             <column name="quantity_in_stock" type="numeric"/>
             <column name="nbr_of_sells" type="numeric"/>
+            <column name="image_path" type="string"/>
             <column name="minimal_quantity" type="numeric"/>
             <column name="maximal_quantity" type="numeric"/>
             <column name="weighted_average_price" type="numeric"/>

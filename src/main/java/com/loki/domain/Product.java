@@ -6,8 +6,6 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -51,6 +49,9 @@ public class Product implements Serializable {
 
     @Column(name = "nbr_of_sells")
     private Integer nbrOfSells;
+
+    @Column(name = "image_path")
+    private String imagePath;
 
     @DecimalMin(value = "0")
     @Column(name = "minimal_quantity")
@@ -116,10 +117,6 @@ public class Product implements Serializable {
     @ManyToOne
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private ProductCategory productCategory;
-
-    @OneToMany(mappedBy = "product")
-    @JsonIgnoreProperties(value = { "product" }, allowSetters = true)
-    private Set<Image> images = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -225,6 +222,19 @@ public class Product implements Serializable {
 
     public void setNbrOfSells(Integer nbrOfSells) {
         this.nbrOfSells = nbrOfSells;
+    }
+
+    public String getImagePath() {
+        return this.imagePath;
+    }
+
+    public Product imagePath(String imagePath) {
+        this.setImagePath(imagePath);
+        return this;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Double getMinimalQuantity() {
@@ -487,37 +497,6 @@ public class Product implements Serializable {
         return this;
     }
 
-    public Set<Image> getImages() {
-        return this.images;
-    }
-
-    public void setImages(Set<Image> images) {
-        if (this.images != null) {
-            this.images.forEach(i -> i.setProduct(null));
-        }
-        if (images != null) {
-            images.forEach(i -> i.setProduct(this));
-        }
-        this.images = images;
-    }
-
-    public Product images(Set<Image> images) {
-        this.setImages(images);
-        return this;
-    }
-
-    public Product addImages(Image image) {
-        this.images.add(image);
-        image.setProduct(this);
-        return this;
-    }
-
-    public Product removeImages(Image image) {
-        this.images.remove(image);
-        image.setProduct(null);
-        return this;
-    }
-
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -549,6 +528,7 @@ public class Product implements Serializable {
             ", active='" + getActive() + "'" +
             ", quantityInStock=" + getQuantityInStock() +
             ", nbrOfSells=" + getNbrOfSells() +
+            ", imagePath='" + getImagePath() + "'" +
             ", minimalQuantity=" + getMinimalQuantity() +
             ", maximalQuantity=" + getMaximalQuantity() +
             ", weightedAveragePrice=" + getWeightedAveragePrice() +

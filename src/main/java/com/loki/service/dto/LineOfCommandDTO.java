@@ -1,10 +1,8 @@
 package com.loki.service.dto;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Objects;
-import javax.validation.constraints.*;
 
 /**
  * A DTO for the {@link com.loki.domain.LineOfCommand} entity.
@@ -15,10 +13,6 @@ public class LineOfCommandDTO implements Serializable {
     private Long id;
 
     private Integer quantity;
-
-    @NotNull
-    @DecimalMin(value = "0")
-    private BigDecimal unitPrice;
 
     private ZonedDateTime created;
 
@@ -48,14 +42,6 @@ public class LineOfCommandDTO implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
-    }
-
-    public BigDecimal getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(BigDecimal unitPrice) {
-        this.unitPrice = unitPrice;
     }
 
     public ZonedDateTime getCreated() {
@@ -141,7 +127,6 @@ public class LineOfCommandDTO implements Serializable {
         return "LineOfCommandDTO{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
-            ", unitPrice=" + getUnitPrice() +
             ", created='" + getCreated() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", updated='" + getUpdated() + "'" +

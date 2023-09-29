@@ -37,7 +37,7 @@ public class Image implements Serializable {
     private String updatedBy;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "fournisseur", "productCategory" }, allowSetters = true)
     private Product product;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

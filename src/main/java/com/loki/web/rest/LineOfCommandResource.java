@@ -9,8 +9,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +54,7 @@ public class LineOfCommandResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/line-of-commands")
-    public ResponseEntity<LineOfCommandDTO> createLineOfCommand(@Valid @RequestBody LineOfCommandDTO lineOfCommandDTO)
+    public ResponseEntity<LineOfCommandDTO> createLineOfCommand(@RequestBody LineOfCommandDTO lineOfCommandDTO) throws URISyntaxException {
         throws URISyntaxException {
         log.debug("REST request to save LineOfCommand : {}", lineOfCommandDTO);
         if (lineOfCommandDTO.getId() != null) {
@@ -82,7 +80,7 @@ public class LineOfCommandResource {
     @PutMapping("/line-of-commands/{id}")
     public ResponseEntity<LineOfCommandDTO> updateLineOfCommand(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody LineOfCommandDTO lineOfCommandDTO
+        @RequestBody LineOfCommandDTO lineOfCommandDTO
     ) throws URISyntaxException {
         log.debug("REST request to update LineOfCommand : {}, {}", id, lineOfCommandDTO);
         if (lineOfCommandDTO.getId() == null) {
@@ -117,7 +115,7 @@ public class LineOfCommandResource {
     @PatchMapping(value = "/line-of-commands/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<LineOfCommandDTO> partialUpdateLineOfCommand(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody LineOfCommandDTO lineOfCommandDTO
+        @RequestBody LineOfCommandDTO lineOfCommandDTO
     ) throws URISyntaxException {
         log.debug("REST request to partial update LineOfCommand partially : {}, {}", id, lineOfCommandDTO);
         if (lineOfCommandDTO.getId() == null) {

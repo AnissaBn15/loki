@@ -39,6 +39,10 @@
       "fieldType": "Integer"
     },
     {
+      "fieldName": "imagePath",
+      "fieldType": "String"
+    },
+    {
       "fieldName": "minimalQuantity",
       "fieldType": "Double",
       "fieldValidateRules": ["min"],
@@ -134,12 +138,6 @@
       "otherEntityRelationshipName": "products",
       "relationshipName": "productCategory",
       "relationshipType": "many-to-one"
-    },
-    {
-      "otherEntityName": "image",
-      "otherEntityRelationshipName": "product",
-      "relationshipName": "images",
-      "relationshipType": "one-to-many"
     }
   ],
   "service": "serviceClass"

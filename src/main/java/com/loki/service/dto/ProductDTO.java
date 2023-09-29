@@ -33,6 +33,8 @@ public class ProductDTO implements Serializable {
 
     private Integer nbrOfSells;
 
+    private String imagePath;
+
     @DecimalMin(value = "0")
     private Double minimalQuantity;
 
@@ -138,6 +140,14 @@ public class ProductDTO implements Serializable {
 
     public void setNbrOfSells(Integer nbrOfSells) {
         this.nbrOfSells = nbrOfSells;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 
     public Double getMinimalQuantity() {
@@ -333,6 +343,7 @@ public class ProductDTO implements Serializable {
             ", active='" + getActive() + "'" +
             ", quantityInStock=" + getQuantityInStock() +
             ", nbrOfSells=" + getNbrOfSells() +
+            ", imagePath='" + getImagePath() + "'" +
             ", minimalQuantity=" + getMinimalQuantity() +
             ", maximalQuantity=" + getMaximalQuantity() +
             ", weightedAveragePrice=" + getWeightedAveragePrice() +
