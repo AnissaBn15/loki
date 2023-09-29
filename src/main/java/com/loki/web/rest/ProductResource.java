@@ -159,11 +159,23 @@ public class ProductResource {
      * @param id the id of the productDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the productDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/products/{id}")
+    @GetMapping("/products/product/{id}")
     public ResponseEntity<ProductDTO> getProduct(@PathVariable Long id) {
         log.debug("REST request to get Product : {}", id);
         Optional<ProductDTO> productDTO = productService.findOne(id);
         return ResponseUtil.wrapOrNotFound(productDTO);
+    }
+
+    @GetMapping("/products/{search}")
+    public ResponseEntity<List<ProductDTO>> getProductsByCategory(@org.springdoc.api.annotations.ParameterObject Pageable pageable, @PathVariable String search) {
+        Page<ProductDTO> produits = productService.getProductsByCategory(pageable, search);
+        return ResponseEntity.ok().body(produits.getContent());
+    }
+
+    @GetMapping("/best-selling")
+    public ResponseEntity<List<ProductDTO>> getBestSellingProducts(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        Page<ProductDTO> products = productService.getBestSellingProducts(pageable);
+        return ResponseEntity.ok().body(products.getContent());
     }
 
     /**

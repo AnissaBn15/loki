@@ -76,6 +76,7 @@ public class ProductService {
             .map(productMapper::toDto);
     }
 
+    public Page<ProductDTO> getProductsByCategory(Pageable pageable, String search) {
         return productRepository.findProduitCategorie(pageable, search).map(productMapper::toDto);
     }
 

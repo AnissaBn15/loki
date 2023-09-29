@@ -55,7 +55,6 @@ public class LineOfCommandResource {
      */
     @PostMapping("/line-of-commands")
     public ResponseEntity<LineOfCommandDTO> createLineOfCommand(@RequestBody LineOfCommandDTO lineOfCommandDTO) throws URISyntaxException {
-        throws URISyntaxException {
         log.debug("REST request to save LineOfCommand : {}", lineOfCommandDTO);
         if (lineOfCommandDTO.getId() != null) {
             throw new BadRequestAlertException("A new lineOfCommand cannot already have an ID", ENTITY_NAME, "idexists");
