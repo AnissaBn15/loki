@@ -2,6 +2,8 @@ package com.loki.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.loki.domain.enumeration.StatusPaiement;
+import lombok.Data;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
@@ -10,6 +12,7 @@ import javax.persistence.*;
 /**
  * A Paiement.
  */
+@Data
 @Entity
 @Table(name = "paiement")
 @SuppressWarnings("common-java:DuplicatedBlocks")
@@ -29,6 +32,9 @@ public class Paiement implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private StatusPaiement status;
+
+    @Column(name = "active")
+    private Boolean active;
 
     @Column(name = "created")
     private ZonedDateTime created;
@@ -51,6 +57,7 @@ public class Paiement implements Serializable {
     @JsonIgnoreProperties(value = { "commands", "paiements", "products" }, allowSetters = true)
     private Fournisseur fournisseur;
 
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -65,6 +72,13 @@ public class Paiement implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    public void setActive(Boolean active) {
+        this.active =active;
+    }
+    public Boolean getActive() {
+        return this.active;
+    }
+
 
     public BigDecimal getTotal() {
         return this.total;

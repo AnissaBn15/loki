@@ -1,17 +1,28 @@
 package com.loki.service;
 
 import com.loki.domain.Paiement;
+import com.loki.domain.enumeration.ErrorCodes;
+import com.loki.domain.enumeration.StatusPaiement;
 import com.loki.repository.PaiementRepository;
 import com.loki.service.dto.PaiementDTO;
 import com.loki.service.mapper.PaiementMapper;
+
+import java.util.List;
 import java.util.Optional;
+
+import com.loki.validator.PaimentValidateur;
+import com.loki.web.rest.errors.InvalidEntityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Optional;
 /**
  * Service Implementation for managing {@link Paiement}.
  */
@@ -36,25 +47,76 @@ public class PaiementService {
      * @param paiementDTO the entity to save.
      * @return the persisted entity.
      */
-    public PaiementDTO save(PaiementDTO paiementDTO) {
+    /*   public PaiementDTO save(PaiementDTO paiementDTO) {
         log.debug("Request to save Paiement : {}", paiementDTO);
         Paiement paiement = paiementMapper.toEntity(paiementDTO);
         paiement = paiementRepository.save(paiement);
         return paiementMapper.toDto(paiement);
+    }*/
+    public PaiementDTO confirm(PaiementDTO paiementDTO) {
+       List<String> errors = PaimentValidateur.validate(paiementDTO);
+        if(!errors.isEmpty()){
+            log.error("Article is not valid {}",paiementDTO);
+            throw new InvalidEntityException("L'article n'est pas valid", ErrorCodes.ARTICLE_NOT_VALID, errors);
+        }
+        Paiement paiement = paiementMapper.toEntity(paiementDTO);
+        paiement.setStatus(StatusPaiement.ACCEPTE);
+        paiement.setActive(true);
+        paiement = paiementRepository.save(paiement);
+        return paiementMapper.toDto(paiement);
+        //return PaiementDTO.fromEntity(paiementRepository.save(PaiementDTO.toEntity(paiementDTO)));
     }
 
+    public PaiementDTO cancelPaiement(PaiementDTO paiementDTO) {
+        List<String> errors = PaimentValidateur.validate(paiementDTO);
+        if(!errors.isEmpty()){
+            log.error("Paiement is not valid {}",paiementDTO);
+            throw new InvalidEntityException("L'article n'est pas valid", ErrorCodes.ARTICLE_NOT_VALID, errors);
+        }
+        Paiement paiement = paiementMapper.toEntity(paiementDTO);
+        paiement.setStatus(StatusPaiement.ANNULE);
+        paiement.setActive(false);
+        paiement = paiementRepository.save(paiement);
+        return paiementMapper.toDto(paiement);
+    }
+
+    public PaiementDTO failedPaiement(PaiementDTO paiementDTO) {
+        List<String> errors = PaimentValidateur.validate(paiementDTO);
+        if(!errors.isEmpty()){
+            log.error("Article is not valid {}",paiementDTO);
+            throw new InvalidEntityException("L'article n'est pas valid", ErrorCodes.ARTICLE_NOT_VALID, errors);
+        }
+        Paiement paiement = paiementMapper.toEntity(paiementDTO);
+        paiement.setStatus(StatusPaiement.REFUSE);
+        paiement.setActive(false);
+        paiement = paiementRepository.save(paiement);
+        return paiementMapper.toDto(paiement);
+    }
     /**
      * Update a paiement.
      *
-     * @param paiementDTO the entity to save.
+     * @param //paiementDTO the entity to save.
      * @return the persisted entity.
      */
-    public PaiementDTO update(PaiementDTO paiementDTO) {
+   /* public PaiementDTO update(PaiementDTO paiementDTO) {
         log.debug("Request to update Paiement : {}", paiementDTO);
         Paiement paiement = paiementMapper.toEntity(paiementDTO);
         paiement = paiementRepository.save(paiement);
         return paiementMapper.toDto(paiement);
+    }*/
+    public PaiementDTO update(Long idPaiement) {
+        Paiement paiement1 = new Paiement();
+        try {
+            paiement1 = paiementRepository.findById(idPaiement).get();
+
+            paiement1.setStatus(StatusPaiement.EN_ATTENTE);
+            paiementRepository.save(paiement1);
+
+        }catch (Exception e) {
+        }
+        return paiementMapper.toDto(paiement1);
     }
+
 
     /**
      * Partially update a paiement.
@@ -109,4 +171,6 @@ public class PaiementService {
         log.debug("Request to delete Paiement : {}", id);
         paiementRepository.deleteById(id);
     }
+
+
 }

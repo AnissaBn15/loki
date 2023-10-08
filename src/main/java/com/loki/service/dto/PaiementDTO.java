@@ -21,6 +21,7 @@ public class PaiementDTO implements Serializable {
     private ZonedDateTime created;
 
     private String createdBy;
+    private Boolean active;
 
     private ZonedDateTime updated;
 

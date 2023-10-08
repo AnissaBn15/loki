@@ -22,7 +22,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
-
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 /**
  * REST controller for managing {@link com.loki.domain.Paiement}.
  */
@@ -53,13 +54,39 @@ public class PaiementResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new paiementDTO, or with status {@code 400 (Bad Request)} if the paiement has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/paiements")
-    public ResponseEntity<PaiementDTO> createPaiement(@RequestBody PaiementDTO paiementDTO) throws URISyntaxException {
+    @PostMapping("/paiements/confirm")
+    public ResponseEntity<PaiementDTO> confirmerPaiement(@RequestBody PaiementDTO paiementDTO) throws URISyntaxException {
         log.debug("REST request to save Paiement : {}", paiementDTO);
         if (paiementDTO.getId() != null) {
             throw new BadRequestAlertException("A new paiement cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        PaiementDTO result = paiementService.save(paiementDTO);
+        PaiementDTO result = paiementService.confirm(paiementDTO);
+        return ResponseEntity
+            .created(new URI("/api/paiements/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    @PostMapping("/paiements/cancel")
+    public ResponseEntity<PaiementDTO> cancelPaiement(@RequestBody PaiementDTO paiementDTO) throws URISyntaxException {
+        log.debug("REST request to save Paiement : {}", paiementDTO);
+        if (paiementDTO.getId() != null) {
+            throw new BadRequestAlertException("A new paiement cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        PaiementDTO result = paiementService.cancelPaiement(paiementDTO);
+        return ResponseEntity
+            .created(new URI("/api/paiements/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+    @PostMapping("/paiements/failed")
+    public ResponseEntity<PaiementDTO> failedPaiment(@RequestBody PaiementDTO paiementDTO) throws URISyntaxException {
+        log.debug("REST request to save Paiement : {}", paiementDTO);
+        if (paiementDTO.getId() != null) {
+            throw new BadRequestAlertException("A new paiement cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        PaiementDTO result = paiementService.failedPaiement(paiementDTO);
         return ResponseEntity
             .created(new URI("/api/paiements/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -70,7 +97,6 @@ public class PaiementResource {
      * {@code PUT  /paiements/:id} : Updates an existing paiement.
      *
      * @param id the id of the paiementDTO to save.
-     * @param paiementDTO the paiementDTO to update.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated paiementDTO,
      * or with status {@code 400 (Bad Request)} if the paiementDTO is not valid,
      * or with status {@code 500 (Internal Server Error)} if the paiementDTO couldn't be updated.
@@ -78,25 +104,21 @@ public class PaiementResource {
      */
     @PutMapping("/paiements/{id}")
     public ResponseEntity<PaiementDTO> updatePaiement(
-        @PathVariable(value = "id", required = false) final Long id,
-        @RequestBody PaiementDTO paiementDTO
+        @PathVariable(value = "id", required = false) final Long id
     ) throws URISyntaxException {
-        log.debug("REST request to update Paiement : {}, {}", id, paiementDTO);
-        if (paiementDTO.getId() == null) {
+        log.debug("REST request to update Paiement : {}, {}", id);
+        if (id == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
-        }
-        if (!Objects.equals(id, paiementDTO.getId())) {
-            throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
         if (!paiementRepository.existsById(id)) {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        PaiementDTO result = paiementService.update(paiementDTO);
+        PaiementDTO result = paiementService.update(id);
         return ResponseEntity
             .ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, paiementDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .body(result);
     }
 
@@ -178,4 +200,6 @@ public class PaiementResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
+
+
 }
