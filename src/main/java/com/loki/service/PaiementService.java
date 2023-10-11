@@ -56,22 +56,21 @@ public class PaiementService {
     public PaiementDTO confirm(PaiementDTO paiementDTO) {
        List<String> errors = PaimentValidateur.validate(paiementDTO);
         if(!errors.isEmpty()){
-            log.error("Article is not valid {}",paiementDTO);
-            throw new InvalidEntityException("L'article n'est pas valid", ErrorCodes.ARTICLE_NOT_VALID, errors);
+            log.error("Paiement is not valid {}",paiementDTO);
+            throw new InvalidEntityException("Veuillez renseigner le paiement", ErrorCodes.PAIEMENT_NOT_VALID, errors);
         }
         Paiement paiement = paiementMapper.toEntity(paiementDTO);
         paiement.setStatus(StatusPaiement.ACCEPTE);
         paiement.setActive(true);
         paiement = paiementRepository.save(paiement);
         return paiementMapper.toDto(paiement);
-        //return PaiementDTO.fromEntity(paiementRepository.save(PaiementDTO.toEntity(paiementDTO)));
     }
 
     public PaiementDTO cancelPaiement(PaiementDTO paiementDTO) {
         List<String> errors = PaimentValidateur.validate(paiementDTO);
         if(!errors.isEmpty()){
             log.error("Paiement is not valid {}",paiementDTO);
-            throw new InvalidEntityException("L'article n'est pas valid", ErrorCodes.ARTICLE_NOT_VALID, errors);
+            throw new InvalidEntityException("Veuillez renseigner le paiement", ErrorCodes.PAIEMENT_NOT_FOUND, errors);
         }
         Paiement paiement = paiementMapper.toEntity(paiementDTO);
         paiement.setStatus(StatusPaiement.ANNULE);
@@ -83,8 +82,8 @@ public class PaiementService {
     public PaiementDTO failedPaiement(PaiementDTO paiementDTO) {
         List<String> errors = PaimentValidateur.validate(paiementDTO);
         if(!errors.isEmpty()){
-            log.error("Article is not valid {}",paiementDTO);
-            throw new InvalidEntityException("L'article n'est pas valid", ErrorCodes.ARTICLE_NOT_VALID, errors);
+            log.error("Paiement is not valid {}",paiementDTO);
+            throw new InvalidEntityException("Veuillez renseigner le paiement", ErrorCodes.PAIEMENT_NOT_VALID, errors);
         }
         Paiement paiement = paiementMapper.toEntity(paiementDTO);
         paiement.setStatus(StatusPaiement.REFUSE);

@@ -1,9 +1,9 @@
 package com.loki.domain.enumeration;
 
 public enum ErrorCodes {
-        ARTICLE_NOT_FOUND(1000),
-        ARTICLE_NOT_VALID(1001),
-        ARTICLE_ALREADY_IN_USE(1002);
+    PAIEMENT_NOT_FOUND(1000),
+    PAIEMENT_NOT_VALID(1001),
+    PAIEMENT_ALREADY_IN_USE(1002);
         private int code;
 
         ErrorCodes(int code) {

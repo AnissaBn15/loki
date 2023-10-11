@@ -70,9 +70,7 @@ public class PaiementResource {
     @PostMapping("/paiements/cancel")
     public ResponseEntity<PaiementDTO> cancelPaiement(@RequestBody PaiementDTO paiementDTO) throws URISyntaxException {
         log.debug("REST request to save Paiement : {}", paiementDTO);
-        if (paiementDTO.getId() != null) {
-            throw new BadRequestAlertException("A new paiement cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+
         PaiementDTO result = paiementService.cancelPaiement(paiementDTO);
         return ResponseEntity
             .created(new URI("/api/paiements/" + result.getId()))
@@ -83,9 +81,7 @@ public class PaiementResource {
     @PostMapping("/paiements/failed")
     public ResponseEntity<PaiementDTO> failedPaiment(@RequestBody PaiementDTO paiementDTO) throws URISyntaxException {
         log.debug("REST request to save Paiement : {}", paiementDTO);
-        if (paiementDTO.getId() != null) {
-            throw new BadRequestAlertException("A new paiement cannot already have an ID", ENTITY_NAME, "idexists");
-        }
+
         PaiementDTO result = paiementService.failedPaiement(paiementDTO);
         return ResponseEntity
             .created(new URI("/api/paiements/" + result.getId()))

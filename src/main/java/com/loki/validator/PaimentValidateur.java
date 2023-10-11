@@ -11,25 +11,22 @@ public class PaimentValidateur {
         List<String> errors = new ArrayList<>();
 
         if (paiementDTO == null) {
-            errors.add("Veuillez renseigner l'adresse 1'");
-            errors.add("Veuillez renseigner la ville'");
-            errors.add("Veuillez renseigner le pays'");
-            errors.add("Veuillez renseigner le code postal'");
+            //errors.add("Veuillez renseigner le paiement");
+            errors.add("Veuillez renseigner l'identifiant du fournisseur");
+            errors.add("Veuillez renseigner l'identifiant de la commande");
+            errors.add("Veuillez renseigner le total du paiement");
             return errors;
         }
-        if (!StringUtils.hasLength(paiementDTO.getFournisseur().getAddress())) {
-            errors.add("Veuillez renseigner l'adresse du '");
+        if (!StringUtils.hasLength(paiementDTO.getFournisseur().getId().toString())) {
+            errors.add("Veuillez renseigner l'identifiant du fournisseur");
         }
-        if (!StringUtils.hasLength(paiementDTO.getCommand().getCommandNumber())) {
-            errors.add("Veuillez renseigner la ville'");
+        if (!StringUtils.hasLength(paiementDTO.getCommand().getId().toString())) {
+            errors.add("Veuillez renseigner l'identifiant de la commande");
         }
         if (!StringUtils.hasLength(paiementDTO.getTotal().toString())) {
-            errors.add("Veuillez renseigner le pays'");
+            errors.add("Veuillez renseigner le total du paiement");
         }
-        if (!StringUtils.hasLength(paiementDTO.getStatus().toString())){
 
-            errors.add("Veuillez renseigner le code postal'");
-        }
         return errors;
     }
 }
