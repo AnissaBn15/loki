@@ -4,6 +4,8 @@ import com.loki.domain.Product;
 import com.loki.repository.ProductRepository;
 import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.ProductMapper;
+
+import java.util.List;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -94,6 +96,10 @@ public class ProductService {
     public Page<ProductDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Products");
         return productRepository.findAll(pageable).map(productMapper::toDto);
+    }
+
+    public void saveAll(List<ProductDTO> productDTOList) {
+        productRepository.saveAll(productMapper.toEntity(productDTOList));
     }
 
     /**

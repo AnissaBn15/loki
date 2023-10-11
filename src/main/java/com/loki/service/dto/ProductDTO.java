@@ -78,6 +78,8 @@ public class ProductDTO implements Serializable {
 
     private ProductCategoryDTO productCategory;
 
+    private Long productCategoryId;
+
     public Long getId() {
         return id;
     }
@@ -308,6 +310,14 @@ public class ProductDTO implements Serializable {
 
     public void setProductCategory(ProductCategoryDTO productCategory) {
         this.productCategory = productCategory;
+    }
+
+    public Long getProductCategoryId() {
+        return productCategoryId;
+    }
+
+    public void setProductCategoryId(Long productCategoryId) {
+        this.productCategoryId = productCategoryId;
     }
 
     @Override

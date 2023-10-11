@@ -66,6 +66,19 @@ public class PanierResource {
             .body(result);
     }
 
+
+    @PostMapping("/paniers/addToPanier/{id}")
+    public ResponseEntity<Void> addToPanier(@PathVariable Long id) {
+        panierService.addToPanier(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/paniers/vider")
+    public ResponseEntity<Void> viderPanier() {
+        panierService.viderPanier();
+        return ResponseEntity.ok().build();
+    }
+
     /**
      * {@code PUT  /paniers/:id} : Updates an existing panier.
      *

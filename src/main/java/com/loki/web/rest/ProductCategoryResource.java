@@ -67,6 +67,20 @@ public class ProductCategoryResource {
             .body(result);
     }
 
+    @PostMapping("/product-categories/create")
+    public ResponseEntity<ProductCategoryDTO> createProductsCategory(@RequestBody ProductCategoryDTO productCategoryDTO) throws URISyntaxException{
+        log.debug("REST request to save ProductCategoryResource : {}", productCategoryDTO);
+        if (productCategoryDTO.getId() != null) {
+            throw new BadRequestAlertException("A new productCategory cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+        ProductCategoryDTO result = productCategoryService.create(productCategoryDTO);
+        return ResponseEntity
+        .created(new URI("/api/product-categories/create" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+            .body(result);
+    }
+
+
     /**
      * {@code PUT  /product-categories/:id} : Updates an existing productCategory.
      *

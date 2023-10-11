@@ -15,6 +15,7 @@ import org.mapstruct.*;
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     @Mapping(target = "fournisseur", source = "fournisseur", qualifiedByName = "fournisseurId")
     @Mapping(target = "productCategory", source = "productCategory", qualifiedByName = "productCategoryId")
+    @Mapping(target = "productCategoryId", source = "productCategory.id")
     ProductDTO toDto(Product s);
 
     @Named("fournisseurId")

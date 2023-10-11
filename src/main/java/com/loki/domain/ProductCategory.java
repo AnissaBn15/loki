@@ -32,7 +32,7 @@ public class ProductCategory implements Serializable {
     @Column(name = "created_by")
     private String createdBy;
 
-    @OneToMany(mappedBy = "productCategory")
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.PERSIST)
     @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 

@@ -1,8 +1,9 @@
 package com.loki.service.dto;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A DTO for the {@link com.loki.domain.ProductCategory} entity.
@@ -17,6 +18,9 @@ public class ProductCategoryDTO implements Serializable {
     private ZonedDateTime created;
 
     private String createdBy;
+
+    @NotEmpty
+    private Set<ProductDTO> products = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -48,6 +52,14 @@ public class ProductCategoryDTO implements Serializable {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public Set<ProductDTO> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Set<ProductDTO> products) {
+        this.products = products;
     }
 
     @Override

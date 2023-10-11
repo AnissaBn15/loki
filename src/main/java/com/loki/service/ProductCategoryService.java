@@ -1,10 +1,22 @@
 package com.loki.service;
 
+import com.loki.domain.Product;
 import com.loki.domain.ProductCategory;
 import com.loki.repository.ProductCategoryRepository;
+import com.loki.security.SecurityUtils;
 import com.loki.service.dto.ProductCategoryDTO;
+import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.ProductCategoryMapper;
+
+import java.math.BigDecimal;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
+import com.loki.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -25,9 +37,15 @@ public class ProductCategoryService {
 
     private final ProductCategoryMapper productCategoryMapper;
 
-    public ProductCategoryService(ProductCategoryRepository productCategoryRepository, ProductCategoryMapper productCategoryMapper) {
+    private final ProductService productService;
+
+    private final ProductMapper productMapper;
+
+    public ProductCategoryService(ProductCategoryRepository productCategoryRepository, ProductCategoryMapper productCategoryMapper, ProductService productService, ProductMapper productMapper) {
         this.productCategoryRepository = productCategoryRepository;
         this.productCategoryMapper = productCategoryMapper;
+        this.productService = productService;
+        this.productMapper = productMapper;
     }
 
     /**
@@ -42,6 +60,18 @@ public class ProductCategoryService {
         productCategory = productCategoryRepository.save(productCategory);
         return productCategoryMapper.toDto(productCategory);
     }
+
+    public ProductCategoryDTO create(ProductCategoryDTO productCategoryDTO) {
+        log.debug("Request to save ProductCategory : {}", productCategoryDTO);
+        ProductCategory productCategory = productCategoryMapper.toEntity(productCategoryDTO);
+        return productCategoryMapper.toDto(productCategoryRepository.save(productCategory));
+    }
+
+    private void setFields(ProductCategoryDTO productCategoryDTO, ProductCategoryDTO savedProductCategoryDTO) {
+        savedProductCategoryDTO.setName(productCategoryDTO.getName());
+    }
+
+
 
     /**
      * Update a productCategory.
