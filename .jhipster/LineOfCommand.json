@@ -10,6 +10,10 @@
       "fieldType": "Integer"
     },
     {
+      "fieldName": "total",
+      "fieldType": "BigDecimal"
+    },
+    {
       "fieldName": "created",
       "fieldType": "ZonedDateTime"
     },

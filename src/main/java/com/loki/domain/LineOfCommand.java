@@ -2,6 +2,7 @@ package com.loki.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import javax.persistence.*;
 
@@ -23,6 +24,9 @@ public class LineOfCommand implements Serializable {
 
     @Column(name = "quantity")
     private Integer quantity;
+
+    @Column(name = "total", precision = 21, scale = 2)
+    private BigDecimal total;
 
     @Column(name = "created")
     private ZonedDateTime created;
@@ -74,6 +78,19 @@ public class LineOfCommand implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getTotal() {
+        return this.total;
+    }
+
+    public LineOfCommand total(BigDecimal total) {
+        this.setTotal(total);
+        return this;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     public ZonedDateTime getCreated() {
@@ -192,6 +209,7 @@ public class LineOfCommand implements Serializable {
         return "LineOfCommand{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
+            ", total=" + getTotal() +
             ", created='" + getCreated() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", updated='" + getUpdated() + "'" +

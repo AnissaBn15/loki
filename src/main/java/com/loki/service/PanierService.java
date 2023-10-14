@@ -5,10 +5,12 @@ import com.loki.domain.Panier;
 import com.loki.domain.Product;
 import com.loki.domain.enumeration.PanierStatus;
 import com.loki.repository.PanierRepository;
+import com.loki.repository.ProductRepository;
 import com.loki.service.dto.PanierDTO;
 import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.PanierMapper;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Optional;
 
@@ -35,14 +37,17 @@ public class PanierService {
 
     private final PanierRepository panierRepository;
 
+    private final ProductRepository productRepository;
+
     private final PanierMapper panierMapper;
 
     private final ProductMapper productMapper;
 
     private final ProductService productService;
 
-    public PanierService(PanierRepository panierRepository, PanierMapper panierMapper, ProductMapper productMapper, ProductService productService) {
+    public PanierService(PanierRepository panierRepository, ProductRepository productRepository, PanierMapper panierMapper, ProductMapper productMapper, ProductService productService) {
         this.panierRepository = panierRepository;
+        this.productRepository = productRepository;
         this.panierMapper = panierMapper;
         this.productMapper = productMapper;
         this.productService = productService;
@@ -62,23 +67,30 @@ public class PanierService {
     }
 
     @Transactional
-    public void addToPanier(Long id) {
+    public void addToPanier(Long id, int quantity) {
         Panier panier = getCurrentUserPanier();
         Optional<ProductDTO> productDTOOptional = productService.findOne(id);
         if (productDTOOptional.isPresent()) {
             ProductDTO productDTO = productDTOOptional.get();
             Product product = productMapper.toEntity(productDTO);
-            LineOfCommand lineOfCommand = new LineOfCommand();
-            lineOfCommand.setProduct(product);
-            lineOfCommand.setQuantity(lineOfCommand.getQuantity());
-            panier.addLinesCommand(lineOfCommand);
-            panier.setStatus(PanierStatus.EN_COURS);
-            panier.setCreated(ZonedDateTime.now());
-            panierRepository.save(panier);
-        } else {
-
-        }
-    }
+            // Vérifier si la quantité demandée est disponible
+            if (product.getQuantityInStock() >= quantity) {
+                LineOfCommand lineOfCommand = new LineOfCommand();
+                lineOfCommand.setQuantity(quantity);
+                lineOfCommand.setProduct(product);
+                // Mettre à jour la quantité en stock du produit
+                product.setQuantityInStock(product.getQuantityInStock() - quantity);
+                // Calculer le total et l'ajouter à la commande
+                BigDecimal total = product.getWeightedAveragePrice().multiply(BigDecimal.valueOf(quantity));
+                lineOfCommand.setTotal(total);
+                panier.addLinesCommand(lineOfCommand);
+                panier.setStatus(PanierStatus.EN_COURS);
+                panier.setCreated(ZonedDateTime.now());
+                // Mettre à jour le panier
+                panierRepository.save(panier);
+                // Mettre à jour le produit
+                productRepository.save(product);
+            }}}
 
     public void viderPanier() {
         Panier panier = getCurrentUserPanier();
