@@ -73,22 +73,18 @@ public class PanierService {
         if (productDTOOptional.isPresent()) {
             ProductDTO productDTO = productDTOOptional.get();
             Product product = productMapper.toEntity(productDTO);
-            // Vérifier si la quantité demandée est disponible
             if (product.getQuantityInStock() >= quantity) {
                 LineOfCommand lineOfCommand = new LineOfCommand();
                 lineOfCommand.setQuantity(quantity);
                 lineOfCommand.setProduct(product);
-                // Mettre à jour la quantité en stock du produit
                 product.setQuantityInStock(product.getQuantityInStock() - quantity);
-                // Calculer le total et l'ajouter à la commande
                 BigDecimal total = product.getWeightedAveragePrice().multiply(BigDecimal.valueOf(quantity));
                 lineOfCommand.setTotal(total);
                 panier.addLinesCommand(lineOfCommand);
+                log.debug("Request to update : {}", product);
                 panier.setStatus(PanierStatus.EN_COURS);
                 panier.setCreated(ZonedDateTime.now());
-                // Mettre à jour le panier
                 panierRepository.save(panier);
-                // Mettre à jour le produit
                 productRepository.save(product);
             }}}
 
@@ -101,6 +97,17 @@ public class PanierService {
     private Panier getCurrentUserPanier() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
+        Panier panier = (Panier) session.getAttribute("panier");
+        if (panier == null) {
+            panier = new Panier();
+            session.setAttribute("panier", panier);
+        }
+        return panier;
+    }
+
+    /*private Panier getCurrentUserPanier() {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+        HttpSession session = attr.getRequest().getSession(true);
         // Obtenez le panier à partir de la session
         Panier panier = (Panier) session.getAttribute("panier");
         if (panier == null) {
@@ -109,7 +116,7 @@ public class PanierService {
             session.setAttribute("panier", panier);
         }
         return panier;
-    }
+    }*/
 
     /**
      * Update a panier.
