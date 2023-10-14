@@ -17,6 +17,9 @@
             <column name="quantity" type="integer">
                 <constraints nullable="true" />
             </column>
+            <column name="total" type="decimal(21,2)">
+                <constraints nullable="true" />
+            </column>
             <column name="created" type="${datetimeType}">
                 <constraints nullable="true" />
             </column>
@@ -62,6 +65,7 @@
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
             <column name="quantity" type="numeric"/>
+            <column name="total" type="numeric"/>
             <column name="created" type="date"/>
             <column name="created_by" type="string"/>
             <column name="updated" type="date"/>
