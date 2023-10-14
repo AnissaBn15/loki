@@ -67,9 +67,9 @@ public class PanierResource {
     }
 
 
-    @PostMapping("/paniers/addToPanier/{id}")
-    public ResponseEntity<Void> addToPanier(@PathVariable Long id) {
-        panierService.addToPanier(id);
+    @PostMapping("/paniers/addToPanier/{id}/{quantity}")
+    public ResponseEntity<Void> addToPanier(@PathVariable Long id, @PathVariable int quantity) {
+        panierService.addToPanier(id, quantity);
         return ResponseEntity.ok().build();
     }
 
