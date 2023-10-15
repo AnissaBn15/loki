@@ -57,6 +57,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * Another option would be to have a specific JPA entity graph to handle this case.
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/admin")
 public class UserResource {
 

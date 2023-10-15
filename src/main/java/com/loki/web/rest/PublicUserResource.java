@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.PaginationUtil;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class PublicUserResource {
 
