@@ -27,6 +27,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.loki.domain.Panier}.
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class PanierResource {
 
@@ -64,6 +65,19 @@ public class PanierResource {
             .created(new URI("/api/paniers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+
+    @PostMapping("/paniers/addToPanier/{id}/{quantity}")
+    public ResponseEntity<Void> addToPanier(@PathVariable Long id, @PathVariable int quantity) {
+        panierService.addToPanier(id, quantity);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/paniers/vider")
+    public ResponseEntity<Void> viderPanier() {
+        panierService.viderPanier();
+        return ResponseEntity.ok().build();
     }
 
     /**

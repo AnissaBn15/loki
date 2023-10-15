@@ -1,6 +1,7 @@
 package com.loki.web.rest;
 
 import static com.loki.web.rest.TestUtil.sameInstant;
+import static com.loki.web.rest.TestUtil.sameNumber;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -11,6 +12,7 @@ import com.loki.domain.LineOfCommand;
 import com.loki.repository.LineOfCommandRepository;
 import com.loki.service.dto.LineOfCommandDTO;
 import com.loki.service.mapper.LineOfCommandMapper;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
@@ -38,6 +40,9 @@ class LineOfCommandResourceIT {
 
     private static final Integer DEFAULT_QUANTITY = 1;
     private static final Integer UPDATED_QUANTITY = 2;
+
+    private static final BigDecimal DEFAULT_TOTAL = new BigDecimal(1);
+    private static final BigDecimal UPDATED_TOTAL = new BigDecimal(2);
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -80,6 +85,7 @@ class LineOfCommandResourceIT {
     public static LineOfCommand createEntity(EntityManager em) {
         LineOfCommand lineOfCommand = new LineOfCommand()
             .quantity(DEFAULT_QUANTITY)
+            .total(DEFAULT_TOTAL)
             .created(DEFAULT_CREATED)
             .createdBy(DEFAULT_CREATED_BY)
             .updated(DEFAULT_UPDATED)
@@ -96,6 +102,7 @@ class LineOfCommandResourceIT {
     public static LineOfCommand createUpdatedEntity(EntityManager em) {
         LineOfCommand lineOfCommand = new LineOfCommand()
             .quantity(UPDATED_QUANTITY)
+            .total(UPDATED_TOTAL)
             .created(UPDATED_CREATED)
             .createdBy(UPDATED_CREATED_BY)
             .updated(UPDATED_UPDATED)
@@ -125,6 +132,7 @@ class LineOfCommandResourceIT {
         assertThat(lineOfCommandList).hasSize(databaseSizeBeforeCreate + 1);
         LineOfCommand testLineOfCommand = lineOfCommandList.get(lineOfCommandList.size() - 1);
         assertThat(testLineOfCommand.getQuantity()).isEqualTo(DEFAULT_QUANTITY);
+        assertThat(testLineOfCommand.getTotal()).isEqualByComparingTo(DEFAULT_TOTAL);
         assertThat(testLineOfCommand.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testLineOfCommand.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
         assertThat(testLineOfCommand.getUpdated()).isEqualTo(DEFAULT_UPDATED);
@@ -165,6 +173,7 @@ class LineOfCommandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(lineOfCommand.getId().intValue())))
             .andExpect(jsonPath("$.[*].quantity").value(hasItem(DEFAULT_QUANTITY)))
+            .andExpect(jsonPath("$.[*].total").value(hasItem(sameNumber(DEFAULT_TOTAL))))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].createdBy").value(hasItem(DEFAULT_CREATED_BY)))
             .andExpect(jsonPath("$.[*].updated").value(hasItem(sameInstant(DEFAULT_UPDATED))))
@@ -184,6 +193,7 @@ class LineOfCommandResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(lineOfCommand.getId().intValue()))
             .andExpect(jsonPath("$.quantity").value(DEFAULT_QUANTITY))
+            .andExpect(jsonPath("$.total").value(sameNumber(DEFAULT_TOTAL)))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
             .andExpect(jsonPath("$.createdBy").value(DEFAULT_CREATED_BY))
             .andExpect(jsonPath("$.updated").value(sameInstant(DEFAULT_UPDATED)))
@@ -211,6 +221,7 @@ class LineOfCommandResourceIT {
         em.detach(updatedLineOfCommand);
         updatedLineOfCommand
             .quantity(UPDATED_QUANTITY)
+            .total(UPDATED_TOTAL)
             .created(UPDATED_CREATED)
             .createdBy(UPDATED_CREATED_BY)
             .updated(UPDATED_UPDATED)
@@ -230,6 +241,7 @@ class LineOfCommandResourceIT {
         assertThat(lineOfCommandList).hasSize(databaseSizeBeforeUpdate);
         LineOfCommand testLineOfCommand = lineOfCommandList.get(lineOfCommandList.size() - 1);
         assertThat(testLineOfCommand.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testLineOfCommand.getTotal()).isEqualByComparingTo(UPDATED_TOTAL);
         assertThat(testLineOfCommand.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testLineOfCommand.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testLineOfCommand.getUpdated()).isEqualTo(UPDATED_UPDATED);
@@ -317,8 +329,9 @@ class LineOfCommandResourceIT {
 
         partialUpdatedLineOfCommand
             .quantity(UPDATED_QUANTITY)
+            .total(UPDATED_TOTAL)
             .created(UPDATED_CREATED)
-            .createdBy(UPDATED_CREATED_BY)
+            .updated(UPDATED_UPDATED)
             .updatedBy(UPDATED_UPDATED_BY);
 
         restLineOfCommandMockMvc
@@ -334,9 +347,10 @@ class LineOfCommandResourceIT {
         assertThat(lineOfCommandList).hasSize(databaseSizeBeforeUpdate);
         LineOfCommand testLineOfCommand = lineOfCommandList.get(lineOfCommandList.size() - 1);
         assertThat(testLineOfCommand.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testLineOfCommand.getTotal()).isEqualByComparingTo(UPDATED_TOTAL);
         assertThat(testLineOfCommand.getCreated()).isEqualTo(UPDATED_CREATED);
-        assertThat(testLineOfCommand.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
-        assertThat(testLineOfCommand.getUpdated()).isEqualTo(DEFAULT_UPDATED);
+        assertThat(testLineOfCommand.getCreatedBy()).isEqualTo(DEFAULT_CREATED_BY);
+        assertThat(testLineOfCommand.getUpdated()).isEqualTo(UPDATED_UPDATED);
         assertThat(testLineOfCommand.getUpdatedBy()).isEqualTo(UPDATED_UPDATED_BY);
     }
 
@@ -354,6 +368,7 @@ class LineOfCommandResourceIT {
 
         partialUpdatedLineOfCommand
             .quantity(UPDATED_QUANTITY)
+            .total(UPDATED_TOTAL)
             .created(UPDATED_CREATED)
             .createdBy(UPDATED_CREATED_BY)
             .updated(UPDATED_UPDATED)
@@ -372,6 +387,7 @@ class LineOfCommandResourceIT {
         assertThat(lineOfCommandList).hasSize(databaseSizeBeforeUpdate);
         LineOfCommand testLineOfCommand = lineOfCommandList.get(lineOfCommandList.size() - 1);
         assertThat(testLineOfCommand.getQuantity()).isEqualTo(UPDATED_QUANTITY);
+        assertThat(testLineOfCommand.getTotal()).isEqualByComparingTo(UPDATED_TOTAL);
         assertThat(testLineOfCommand.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testLineOfCommand.getCreatedBy()).isEqualTo(UPDATED_CREATED_BY);
         assertThat(testLineOfCommand.getUpdated()).isEqualTo(UPDATED_UPDATED);

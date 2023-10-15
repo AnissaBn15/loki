@@ -27,6 +27,7 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.loki.domain.LineOfCommand}.
  */
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class LineOfCommandResource {
 

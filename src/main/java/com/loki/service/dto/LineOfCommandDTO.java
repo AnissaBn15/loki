@@ -1,6 +1,7 @@
 package com.loki.service.dto;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -13,6 +14,8 @@ public class LineOfCommandDTO implements Serializable {
     private Long id;
 
     private Integer quantity;
+
+    private BigDecimal total;
 
     private ZonedDateTime created;
 
@@ -42,6 +45,14 @@ public class LineOfCommandDTO implements Serializable {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
     }
 
     public ZonedDateTime getCreated() {
@@ -127,6 +138,7 @@ public class LineOfCommandDTO implements Serializable {
         return "LineOfCommandDTO{" +
             "id=" + getId() +
             ", quantity=" + getQuantity() +
+            ", total=" + getTotal() +
             ", created='" + getCreated() + "'" +
             ", createdBy='" + getCreatedBy() + "'" +
             ", updated='" + getUpdated() + "'" +

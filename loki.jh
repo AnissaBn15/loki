@@ -70,6 +70,7 @@ entity Command {
 
 entity LineOfCommand {
   quantity Integer
+  total BigDecimal
   created ZonedDateTime
   createdBy String
   updated ZonedDateTime

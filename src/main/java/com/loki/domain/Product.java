@@ -114,7 +114,8 @@ public class Product implements Serializable {
     @JsonIgnoreProperties(value = { "commands", "paiements", "products" }, allowSetters = true)
     private Fournisseur fournisseur;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    //@JoinColumn(name="product_category_id", referencedColumnName = "id")
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private ProductCategory productCategory;
 

@@ -65,6 +65,8 @@ public class SecurityConfiguration {
             .antMatchers("/swagger-ui/**").permitAll()
             .antMatchers("/test/**").permitAll()
             .antMatchers("/api/**").permitAll()
+            .antMatchers("/api/paniers/**").permitAll()
+            .antMatchers("/api/product-categories/**").permitAll()
             .antMatchers("/api/authenticate").permitAll()
             .antMatchers("/api/register").permitAll()
             .antMatchers("/api/activate").permitAll()
