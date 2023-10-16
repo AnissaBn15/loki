@@ -66,11 +66,9 @@ public class PanierResource {
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
     }
-
-
     @PostMapping("/paniers/addToPanier/{id}/{quantity}")
-    public ResponseEntity<Void> addToPanier(@PathVariable Long id, @PathVariable int quantity) {
-        panierService.addToPanier(id, quantity);
+    public ResponseEntity<Void> addToPanier(Long clientId, @PathVariable Long id, @PathVariable int quantity) {
+        panierService.createPanierForClient(id,quantity);
         return ResponseEntity.ok().build();
     }
 
@@ -79,7 +77,6 @@ public class PanierResource {
         panierService.viderPanier();
         return ResponseEntity.ok().build();
     }
-
     /**
      * {@code PUT  /paniers/:id} : Updates an existing panier.
      *

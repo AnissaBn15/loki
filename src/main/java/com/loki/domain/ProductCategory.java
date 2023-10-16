@@ -1,5 +1,6 @@
 package com.loki.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -33,8 +34,8 @@ public class ProductCategory implements Serializable {
     private String createdBy;
 
 
-    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
     @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
