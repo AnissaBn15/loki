@@ -1,30 +1,27 @@
 package com.loki.service.mapper;
-
-import com.loki.domain.Fournisseur;
 import com.loki.domain.Product;
-import com.loki.domain.ProductCategory;
-import com.loki.service.dto.FournisseurDTO;
-import com.loki.service.dto.ProductCategoryDTO;
 import com.loki.service.dto.ProductDTO;
 import org.mapstruct.*;
 
 /**
  * Mapper for the entity {@link Product} and its DTO {@link ProductDTO}.
  */
-@Mapper(componentModel = "spring")
+
+
+@Mapper(componentModel = "spring" ,uses = {ProductCategoryMapper.class})
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
-    @Mapping(target = "fournisseur", source = "fournisseur", qualifiedByName = "fournisseurId")
-    @Mapping(target = "productCategory", source = "productCategory", qualifiedByName = "productCategoryId")
-    @Mapping(target = "productCategoryId", source = "productCategory.id")
+    @Mapping(source = "productCategory.id", target = "productCategoryId")
     ProductDTO toDto(Product s);
 
-    @Named("fournisseurId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    FournisseurDTO toDtoFournisseurId(Fournisseur fournisseur);
+    @Mapping(source = "productCategoryId", target = "productCategory")
+    Product toEntity(ProductDTO productDTO);
 
-    @Named("productCategoryId")
-    @BeanMapping(ignoreByDefault = true)
-    @Mapping(target = "id", source = "id")
-    ProductCategoryDTO toDtoProductCategoryId(ProductCategory productCategory);
+    default Product fromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Product product = new Product();
+        product.setId(id);
+        return product;
+    }
 }
