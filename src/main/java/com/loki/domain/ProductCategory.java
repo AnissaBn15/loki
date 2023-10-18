@@ -34,9 +34,10 @@ public class ProductCategory implements Serializable {
     private String createdBy;
 
 
-    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

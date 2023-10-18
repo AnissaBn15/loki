@@ -76,7 +76,7 @@ public class ProductDTO implements Serializable {
 
     private FournisseurDTO fournisseur;
 
-    private ProductCategoryDTO productCategory;
+    //private ProductCategoryDTO productCategory;
 
     private Long productCategoryId;
 
@@ -304,13 +304,13 @@ public class ProductDTO implements Serializable {
         this.fournisseur = fournisseur;
     }
 
-    public ProductCategoryDTO getProductCategory() {
+    /*public ProductCategoryDTO getProductCategory() {
         return productCategory;
     }
 
     public void setProductCategory(ProductCategoryDTO productCategory) {
         this.productCategory = productCategory;
-    }
+    }*/
 
     public Long getProductCategoryId() {
         return productCategoryId;
@@ -373,7 +373,7 @@ public class ProductDTO implements Serializable {
             ", updated='" + getUpdated() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", fournisseur=" + getFournisseur() +
-            ", productCategory=" + getProductCategory() +
+            //", productCategory=" + getProductCategory() +
             "}";
     }
 }

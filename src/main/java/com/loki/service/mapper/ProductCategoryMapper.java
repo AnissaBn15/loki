@@ -23,5 +23,4 @@ public interface ProductCategoryMapper extends EntityMapper<ProductCategoryDTO, 
         productCategory.setId(id);
         return productCategory;
     }
-
 }

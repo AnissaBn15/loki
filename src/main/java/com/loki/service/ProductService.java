@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -95,11 +96,16 @@ public class ProductService {
  * @param pageable the pagination information.
  * @return the list of entities.
  */
-    @Transactional(readOnly = true)
-    public Page<ProductDTO> findAll(Pageable pageable) {
-        log.debug("Request to get all Products");
-        return productRepository.findAll(pageable).map(productMapper::toDto);
-    }
+@Transactional(readOnly = true)
+public Page<ProductDTO> findAll(Pageable pageable) {
+    log.debug("Request to get all Products");
+    Page<Product> products = productRepository.findAll(pageable);
+    log.debug("Request to get all Products :" +products);
+    // Force l'initialisation explicite des associations nécessaires
+    products.forEach(product -> Hibernate.initialize(product.getProductCategory()));
+    return products.map(productMapper::toDto);
+}
+
 
     public void saveAll(List<ProductDTO> productDTOList) {
         productRepository.saveAll(productMapper.toEntity(productDTOList));

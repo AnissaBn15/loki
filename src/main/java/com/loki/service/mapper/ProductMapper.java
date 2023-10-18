@@ -1,17 +1,19 @@
 package com.loki.service.mapper;
 import com.loki.domain.Product;
+import com.loki.domain.ProductCategory;
+import com.loki.service.dto.ProductCategoryDTO;
 import com.loki.service.dto.ProductDTO;
 import org.mapstruct.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Mapper for the entity {@link Product} and its DTO {@link ProductDTO}.
  */
 
-
 @Mapper(componentModel = "spring" ,uses = {ProductCategoryMapper.class})
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
-    @Mapping(source = "productCategory.id", target = "productCategoryId")
-    ProductDTO toDto(Product s);
+    @Mapping(source = "product.id", target = "productCategoryId")
+    ProductDTO toDto(Product product);
 
     @Mapping(source = "productCategoryId", target = "productCategory")
     Product toEntity(ProductDTO productDTO);
@@ -24,4 +26,4 @@ public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
         product.setId(id);
         return product;
     }
-}
+    }
