@@ -114,10 +114,11 @@ public class Product implements Serializable {
     @JsonIgnoreProperties(value = { "commands", "paiements", "products" }, allowSetters = true)
     private Fournisseur fournisseur;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    //@JoinColumn(name="product_category_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_category_id")
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private ProductCategory productCategory;
+
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 

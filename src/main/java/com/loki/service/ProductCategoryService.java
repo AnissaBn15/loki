@@ -3,17 +3,14 @@ package com.loki.service;
 import com.loki.domain.Product;
 import com.loki.domain.ProductCategory;
 import com.loki.repository.ProductCategoryRepository;
+import com.loki.repository.ProductRepository;
 import com.loki.security.SecurityUtils;
 import com.loki.service.dto.ProductCategoryDTO;
 import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.ProductCategoryMapper;
 
-import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.loki.service.mapper.ProductMapper;
@@ -39,12 +36,15 @@ public class ProductCategoryService {
 
     private final ProductService productService;
 
+    private final ProductRepository productRepository;
+
     private final ProductMapper productMapper;
 
-    public ProductCategoryService(ProductCategoryRepository productCategoryRepository, ProductCategoryMapper productCategoryMapper, ProductService productService, ProductMapper productMapper) {
+    public ProductCategoryService(ProductCategoryRepository productCategoryRepository, ProductCategoryMapper productCategoryMapper, ProductService productService, ProductRepository productRepository, ProductMapper productMapper) {
         this.productCategoryRepository = productCategoryRepository;
         this.productCategoryMapper = productCategoryMapper;
         this.productService = productService;
+        this.productRepository = productRepository;
         this.productMapper = productMapper;
     }
 
@@ -60,18 +60,47 @@ public class ProductCategoryService {
         productCategory = productCategoryRepository.save(productCategory);
         return productCategoryMapper.toDto(productCategory);
     }
-
     public ProductCategoryDTO create(ProductCategoryDTO productCategoryDTO) {
         log.debug("Request to save ProductCategory : {}", productCategoryDTO);
-        ProductCategory productCategory = productCategoryMapper.toEntity(productCategoryDTO);
-        return productCategoryMapper.toDto(productCategoryRepository.save(productCategory));
+        ProductCategoryDTO newProductCategoryDTO = new ProductCategoryDTO();
+        newProductCategoryDTO.setName(productCategoryDTO.getName());
+        newProductCategoryDTO.setCreated(ZonedDateTime.now());
+        newProductCategoryDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin().orElse(null));
+        ProductCategory savedProductCategory = productCategoryMapper.toEntity(productCategoryDTO);
+        savedProductCategory = productCategoryRepository.save(savedProductCategory);
+        List<ProductDTO> productDTOList = productCategoryDTO.getProducts().stream().collect(Collectors.toList());
+        for (ProductDTO productDTO : productDTOList) {
+            productDTO.setProductCategoryId(savedProductCategory.getId());
+            productDTO.setReference(productDTO.getReference());
+            productDTO.setName(productDTO.getName());
+            productDTO.setDescription(productDTO.getDescription());
+            productDTO.setProductStatus(productDTO.getProductStatus());
+            productDTO.setActive(productDTO.getActive());
+            productDTO.setQuantityInStock(productDTO.getQuantityInStock());
+            productDTO.setNbrOfSells(productDTO.getNbrOfSells());
+            productDTO.setImagePath(productDTO.getImagePath());
+            productDTO.setMinimalQuantity(productDTO.getMinimalQuantity());
+            productDTO.setMaximalQuantity(productDTO.getMaximalQuantity());
+            productDTO.setWeightedAveragePrice(productDTO.getWeightedAveragePrice());
+            productDTO.setLocation(productDTO.getLocation());
+            productDTO.setConsumptionDeadline(productDTO.getConsumptionDeadline());
+            productDTO.setBarCode(productDTO.getBarCode());
+            productDTO.setSerialNumber(productDTO.getSerialNumber());
+            productDTO.setBrand(productDTO.getBrand());
+            productDTO.setModel(productDTO.getModel());
+            productDTO.setSection(productDTO.getSection());
+            productDTO.setHallway(productDTO.getHallway());
+            productDTO.setProductDisplay(productDTO.getProductDisplay());
+            productDTO.setLocker(productDTO.getLocker());
+            productDTO.setProductCode(productDTO.getProductCode());
+            productDTO.setCreated(ZonedDateTime.now());
+            productDTO.setCreatedBy(SecurityUtils.getCurrentUserLogin().orElse(null));
+            productDTO.setUpdated(ZonedDateTime.now());
+        }
+        productService.saveAll(productDTOList);
+        productCategoryDTO.setId(savedProductCategory.getId());
+        return productCategoryDTO;
     }
-
-    private void setFields(ProductCategoryDTO productCategoryDTO, ProductCategoryDTO savedProductCategoryDTO) {
-        savedProductCategoryDTO.setName(productCategoryDTO.getName());
-    }
-
-
 
     /**
      * Update a productCategory.

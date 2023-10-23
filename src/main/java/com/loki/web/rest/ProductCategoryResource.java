@@ -1,5 +1,6 @@
 package com.loki.web.rest;
 
+import com.loki.domain.Product;
 import com.loki.repository.ProductCategoryRepository;
 import com.loki.service.ProductCategoryService;
 import com.loki.service.dto.ProductCategoryDTO;

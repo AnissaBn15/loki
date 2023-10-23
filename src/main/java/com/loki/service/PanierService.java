@@ -1,11 +1,12 @@
 package com.loki.service;
 
-import com.loki.domain.LineOfCommand;
-import com.loki.domain.Panier;
-import com.loki.domain.Product;
+import com.loki.domain.*;
 import com.loki.domain.enumeration.PanierStatus;
+import com.loki.repository.ClientRepository;
 import com.loki.repository.PanierRepository;
 import com.loki.repository.ProductRepository;
+import com.loki.repository.UserRepository;
+import com.loki.security.SecurityUtils;
 import com.loki.service.dto.PanierDTO;
 import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.PanierMapper;
@@ -21,10 +22,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpSession;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpSession;
 
 /**
  * Service Implementation for managing {@link Panier}.
@@ -43,14 +44,20 @@ public class PanierService {
 
     private final ProductMapper productMapper;
 
+    private final UserRepository userRepository;
     private final ProductService productService;
 
-    public PanierService(PanierRepository panierRepository, ProductRepository productRepository, PanierMapper panierMapper, ProductMapper productMapper, ProductService productService) {
+
+    private final ClientRepository clientRepository;
+
+    public PanierService(PanierRepository panierRepository, ProductRepository productRepository, PanierMapper panierMapper, ProductMapper productMapper, UserRepository userRepository, ProductService productService, ClientRepository clientRepository) {
         this.panierRepository = panierRepository;
         this.productRepository = productRepository;
         this.panierMapper = panierMapper;
         this.productMapper = productMapper;
+        this.userRepository = userRepository;
         this.productService = productService;
+        this.clientRepository = clientRepository;
     }
 
     /**
@@ -66,27 +73,42 @@ public class PanierService {
         return panierMapper.toDto(panier);
     }
 
-    @Transactional
-    public void addToPanier(Long id, int quantity) {
-        Panier panier = getCurrentUserPanier();
-        Optional<ProductDTO> productDTOOptional = productService.findOne(id);
-        if (productDTOOptional.isPresent()) {
-            ProductDTO productDTO = productDTOOptional.get();
-            Product product = productMapper.toEntity(productDTO);
-            if (product.getQuantityInStock() >= quantity) {
-                LineOfCommand lineOfCommand = new LineOfCommand();
-                lineOfCommand.setQuantity(quantity);
-                lineOfCommand.setProduct(product);
-                product.setQuantityInStock(product.getQuantityInStock() - quantity);
-                BigDecimal total = product.getWeightedAveragePrice().multiply(BigDecimal.valueOf(quantity));
-                lineOfCommand.setTotal(total);
-                panier.addLinesCommand(lineOfCommand);
-                log.debug("Request to update : {}", product);
+    public PanierDTO createPanierForClient(Long id, int quantity) {
+        String currentLogin = SecurityUtils.getCurrentUserLogin().orElse(null);
+        Optional<User> userOptional = userRepository.findOneByLogin(currentLogin);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            Long userId = user.getId();
+            Panier panier = panierRepository.findFirstByClient_IdAndStatusOrderByCreatedDesc(userId, PanierStatus.EN_COURS);
+            if (panier == null) {
+                panier = new Panier();
+                panier.setClient(clientRepository.findById(userId).orElse(null));
                 panier.setStatus(PanierStatus.EN_COURS);
                 panier.setCreated(ZonedDateTime.now());
                 panierRepository.save(panier);
-                productRepository.save(product);
-            }}}
+            }
+            Optional<ProductDTO> productDTOOptional = productService.findOne(id);
+            if (productDTOOptional.isPresent()) {
+                ProductDTO productDTO = productDTOOptional.get();
+                Product product = productMapper.toEntity(productDTO);
+                if (product.getQuantityInStock() >= quantity) {
+                    LineOfCommand lineOfCommand = new LineOfCommand();
+                    lineOfCommand.setQuantity(quantity);
+                    lineOfCommand.setProduct(product);
+                    product.setQuantityInStock(product.getQuantityInStock() - quantity);
+                    BigDecimal total = product.getWeightedAveragePrice().multiply(BigDecimal.valueOf(quantity));
+                    lineOfCommand.setTotal(total);
+                    panier.addLinesCommand(lineOfCommand);
+                    log.debug("Request to update : {}", product);
+                    productRepository.save(product);
+                }}
+            return panierMapper.toDto(panier);
+        }
+        return null;
+    }
+
+
+
 
     public void viderPanier() {
         Panier panier = getCurrentUserPanier();
@@ -104,19 +126,6 @@ public class PanierService {
         }
         return panier;
     }
-
-    /*private Panier getCurrentUserPanier() {
-        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = attr.getRequest().getSession(true);
-        // Obtenez le panier à partir de la session
-        Panier panier = (Panier) session.getAttribute("panier");
-        if (panier == null) {
-            // Si le panier n'existe pas dans la session, créez-en un nouveau
-            panier = new Panier();
-            session.setAttribute("panier", panier);
-        }
-        return panier;
-    }*/
 
     /**
      * Update a panier.
