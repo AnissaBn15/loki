@@ -1,5 +1,6 @@
 package com.loki.web.rest;
 
+import com.loki.domain.Product;
 import com.loki.repository.ProductRepository;
 import com.loki.service.ProductService;
 import com.loki.service.dto.ProductDTO;
@@ -153,6 +154,13 @@ public class ProductResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
+    @GetMapping("/products/category/{categoryId}")
+    public ResponseEntity<List<ProductDTO>> getProductsByProductCategoryId(@PathVariable Long categoryId, @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        Page<ProductDTO> page = productService.getProductsByProductCategoryIdUsingCustomQuery(categoryId, pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
+    }
+
     /**
      * {@code GET  /products/:id} : get the "id" product.
      *
@@ -166,11 +174,11 @@ public class ProductResource {
         return ResponseUtil.wrapOrNotFound(productDTO);
     }
 
-    @GetMapping("/products/{search}")
+    /*@GetMapping("/products/{search}")
     public ResponseEntity<List<ProductDTO>> getProductsByCategory(@org.springdoc.api.annotations.ParameterObject Pageable pageable, @PathVariable String search) {
         Page<ProductDTO> produits = productService.getProductsByCategory(pageable, search);
         return ResponseEntity.ok().body(produits.getContent());
-    }
+    }*/
 
     @GetMapping("/best-selling")
     public ResponseEntity<List<ProductDTO>> getBestSellingProducts(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
