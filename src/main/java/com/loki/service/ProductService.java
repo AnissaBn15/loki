@@ -1,7 +1,7 @@
 package com.loki.service;
 
 import com.loki.domain.Product;
-import com.loki.domain.Product_;
+//import com.loki.domain.Product_;
 import com.loki.repository.ProductRepository;
 import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.ProductMapper;
@@ -100,17 +100,17 @@ public class ProductService {
         return products.map(productMapper::toDto);
     }
 
-    @Transactional(readOnly = true)
+    /*@Transactional(readOnly = true)
     public Page<ProductDTO> getProductsByProductCategoryIdUsingCustomQuery(Long categoryId, Pageable pageable) {
         Specification<Product> specification = Specification.where(getProductsByCategory(categoryId));
         Page<Product> productList = productRepository.findAll(specification, pageable);
         log.debug("Request to get all Products By Category Id :" + productList);
         return productList.map(productMapper::toDto);
-    }
+    }*/
 
-    private Specification<Product> getProductsByCategory(Long categoryId) {
+    /*private Specification<Product> getProductsByCategory(Long categoryId) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Product_.productCategory), categoryId);
-    }
+    }*/
 
     @Transactional(readOnly = true)
     public Page<ProductDTO> getBestSellingProducts(Pageable pageable) {

@@ -154,12 +154,12 @@ public class ProductResource {
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
-    @GetMapping("/products/category/{categoryId}")
+    /*@GetMapping("/products/category/{categoryId}")
     public ResponseEntity<List<ProductDTO>> getProductsByProductCategoryId(@PathVariable Long categoryId, @org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         Page<ProductDTO> page = productService.getProductsByProductCategoryIdUsingCustomQuery(categoryId, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+    }*/
 
     /**
      * {@code GET  /products/:id} : get the "id" product.
