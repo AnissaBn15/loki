@@ -34,7 +34,7 @@ public class ProductCategory implements Serializable {
     private String createdBy;
 
 
-    @OneToMany(mappedBy = "productCategory", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "linesCommands" }, allowSetters = true)
     @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 

@@ -38,6 +38,7 @@
   "relationships": [
     {
       "otherEntityName": "product",
+      "otherEntityRelationshipName": "linesCommand",
       "relationshipName": "product",
       "relationshipType": "many-to-one"
     },

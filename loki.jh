@@ -146,7 +146,7 @@ relationship OneToOne {
 }
 
 relationship ManyToOne {
-  LineOfCommand{product} to Product
+  LineOfCommand{product} to Product{linesCommand}
 }
 dto * with mapstruct
 service * with serviceClass

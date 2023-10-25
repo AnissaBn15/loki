@@ -41,7 +41,7 @@ public class LineOfCommand implements Serializable {
     private String updatedBy;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "fournisseur", "productCategory" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "linesCommands" }, allowSetters = true)
     private Product product;
 
     @ManyToOne
