@@ -73,7 +73,7 @@ public class PanierService {
         return panierMapper.toDto(panier);
     }
 
-    public PanierDTO createPanierForClient(Long id, int quantity) {
+    /*public PanierDTO createPanierForClient(Long id, int quantity) {
         String currentLogin = SecurityUtils.getCurrentUserLogin().orElse(null);
         Optional<User> userOptional = userRepository.findOneByLogin(currentLogin);
         if (userOptional.isPresent()) {
@@ -105,18 +105,18 @@ public class PanierService {
             return panierMapper.toDto(panier);
         }
         return null;
-    }
+    }*/
 
 
 
 
-    public void viderPanier() {
+    /*public void viderPanier() {
         Panier panier = getCurrentUserPanier();
         panier.getLinesCommands().clear();
         panierRepository.save(panier);
-    }
+    }*/
 
-    private Panier getCurrentUserPanier() {
+    /*private Panier getCurrentUserPanier() {
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
         HttpSession session = attr.getRequest().getSession(true);
         Panier panier = (Panier) session.getAttribute("panier");
@@ -125,7 +125,7 @@ public class PanierService {
             session.setAttribute("panier", panier);
         }
         return panier;
-    }
+    }*/
 
     /**
      * Update a panier.
