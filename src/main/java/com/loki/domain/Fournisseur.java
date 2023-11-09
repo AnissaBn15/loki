@@ -82,7 +82,7 @@ public class Fournisseur implements Serializable {
     private Set<Paiement> paiements = new HashSet<>();
 
     @OneToMany(mappedBy = "fournisseur")
-    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "images" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "linesCommands" }, allowSetters = true)
     private Set<Product> products = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

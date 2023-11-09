@@ -49,7 +49,7 @@ public class Command implements Serializable {
     private String updatedBy;
 
     @OneToMany(mappedBy = "command")
-    @JsonIgnoreProperties(value = { "product", "panier", "command" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "product", "client", "panier", "command" }, allowSetters = true)
     private Set<LineOfCommand> linesCommands = new HashSet<>();
 
     @JsonIgnoreProperties(value = { "command", "fournisseur" }, allowSetters = true)
@@ -57,7 +57,7 @@ public class Command implements Serializable {
     private Paiement paiement;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "paniers", "commands" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "paniers", "commands", "linesCommands" }, allowSetters = true)
     private Client client;
 
     @ManyToOne

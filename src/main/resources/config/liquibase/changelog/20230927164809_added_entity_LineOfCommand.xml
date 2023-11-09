@@ -35,6 +35,9 @@
             <column name="product_id" type="bigint">
                 <constraints nullable="true" />
             </column>
+            <column name="client_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
             <column name="panier_id" type="bigint">
                 <constraints nullable="true" />
             </column>

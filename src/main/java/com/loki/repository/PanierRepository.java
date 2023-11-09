@@ -1,7 +1,6 @@
 package com.loki.repository;
 
 import com.loki.domain.Panier;
-import com.loki.domain.enumeration.PanierStatus;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 
@@ -10,6 +9,4 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unused")
 @Repository
-public interface PanierRepository extends JpaRepository<Panier, Long> {
-        Panier findFirstByClient_IdAndStatusOrderByCreatedDesc(Long userId, PanierStatus status);
-    }
+public interface PanierRepository extends JpaRepository<Panier, Long> {}
