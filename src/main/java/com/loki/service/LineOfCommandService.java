@@ -73,7 +73,8 @@ public class LineOfCommandService {
         lineOfCommand = lineOfCommandRepository.save(lineOfCommand);
         //update product
         Product productUpdate = productRepository.findById(productId).get();
-        productUpdate.setQuantityInStock(productUpdate.getQuantityInStock()- lineOfCommandDTO.getQuantity());
+        productUpdate.setBarCode(productUpdate.getBarCode());
+        productUpdate.setQuantityInStock(productUpdate.getQuantityInStock() - lineOfCommandDTO.getQuantity());
         productUpdate.setNbrOfSells(productUpdate.getNbrOfSells() + lineOfCommand.getQuantity());
         productRepository.save(productUpdate);
         return lineOfCommandMapper.toDto(lineOfCommand);
