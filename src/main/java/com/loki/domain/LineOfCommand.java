@@ -41,8 +41,12 @@ public class LineOfCommand implements Serializable {
     private String updatedBy;
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "fournisseur", "productCategory" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "fournisseur", "productCategory", "linesCommands" }, allowSetters = true)
     private Product product;
+
+    @ManyToOne
+    @JsonIgnoreProperties(value = { "paniers", "commands", "linesCommands" }, allowSetters = true)
+    private Client client;
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "linesCommands", "client" }, allowSetters = true)
@@ -155,6 +159,19 @@ public class LineOfCommand implements Serializable {
 
     public LineOfCommand product(Product product) {
         this.setProduct(product);
+        return this;
+    }
+
+    public Client getClient() {
+        return this.client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
+    public LineOfCommand client(Client client) {
+        this.setClient(client);
         return this;
     }
 

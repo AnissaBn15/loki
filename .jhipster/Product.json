@@ -138,6 +138,12 @@
       "otherEntityRelationshipName": "products",
       "relationshipName": "productCategory",
       "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "lineOfCommand",
+      "otherEntityRelationshipName": "product",
+      "relationshipName": "linesCommand",
+      "relationshipType": "one-to-many"
     }
   ],
   "service": "serviceClass"

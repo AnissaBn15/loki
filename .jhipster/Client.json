@@ -91,6 +91,12 @@
       "otherEntityRelationshipName": "client",
       "relationshipName": "commands",
       "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "lineOfCommand",
+      "otherEntityRelationshipName": "client",
+      "relationshipName": "linesCommand",
+      "relationshipType": "one-to-many"
     }
   ],
   "service": "serviceClass"

@@ -38,7 +38,14 @@
   "relationships": [
     {
       "otherEntityName": "product",
+      "otherEntityRelationshipName": "linesCommand",
       "relationshipName": "product",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityName": "client",
+      "otherEntityRelationshipName": "linesCommand",
+      "relationshipName": "client",
       "relationshipType": "many-to-one"
     },
     {

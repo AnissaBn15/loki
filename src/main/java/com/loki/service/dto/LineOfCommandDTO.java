@@ -27,6 +27,12 @@ public class LineOfCommandDTO implements Serializable {
 
     private ProductDTO product;
 
+    private Long productId;
+
+    private ClientDTO client;
+
+    private Long clientId;
+
     private PanierDTO panier;
 
     private CommandDTO command;
@@ -95,6 +101,14 @@ public class LineOfCommandDTO implements Serializable {
         this.product = product;
     }
 
+    public ClientDTO getClient() {
+        return client;
+    }
+
+    public void setClient(ClientDTO client) {
+        this.client = client;
+    }
+
     public PanierDTO getPanier() {
         return panier;
     }
@@ -109,6 +123,22 @@ public class LineOfCommandDTO implements Serializable {
 
     public void setCommand(CommandDTO command) {
         this.command = command;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
+    }
+
+    public Long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
     }
 
     @Override
@@ -144,6 +174,7 @@ public class LineOfCommandDTO implements Serializable {
             ", updated='" + getUpdated() + "'" +
             ", updatedBy='" + getUpdatedBy() + "'" +
             ", product=" + getProduct() +
+            ", client=" + getClient() +
             ", panier=" + getPanier() +
             ", command=" + getCommand() +
             "}";

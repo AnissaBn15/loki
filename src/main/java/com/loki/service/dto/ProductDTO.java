@@ -74,9 +74,9 @@ public class ProductDTO implements Serializable {
 
     private String updatedBy;
 
-    private FournisseurDTO fournisseur;
+    private Integer nbrCommand;
 
-    //private ProductCategoryDTO productCategory;
+    private FournisseurDTO fournisseur;
 
     private Long productCategoryId;
 
@@ -296,6 +296,14 @@ public class ProductDTO implements Serializable {
         this.updatedBy = updatedBy;
     }
 
+    public Integer getNbrCommand() {
+        return nbrCommand;
+    }
+
+    public void setNbrCommand(Integer nbrCommand) {
+        this.nbrCommand = nbrCommand;
+    }
+
     public FournisseurDTO getFournisseur() {
         return fournisseur;
     }
@@ -303,14 +311,6 @@ public class ProductDTO implements Serializable {
     public void setFournisseur(FournisseurDTO fournisseur) {
         this.fournisseur = fournisseur;
     }
-
-    /*public ProductCategoryDTO getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(ProductCategoryDTO productCategory) {
-        this.productCategory = productCategory;
-    }*/
 
     public Long getProductCategoryId() {
         return productCategoryId;
@@ -320,7 +320,7 @@ public class ProductDTO implements Serializable {
         this.productCategoryId = productCategoryId;
     }
 
-    @Override
+@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;

@@ -41,11 +41,11 @@ public class Panier implements Serializable {
     private String updatedBy;
 
     @OneToMany(mappedBy = "panier")
-    @JsonIgnoreProperties(value = { "product", "panier", "command" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "product", "client", "panier", "command" }, allowSetters = true)
     private Set<LineOfCommand> linesCommands = new HashSet<>();
 
     @ManyToOne
-    @JsonIgnoreProperties(value = { "paniers", "commands" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "paniers", "commands", "linesCommands" }, allowSetters = true)
     private Client client;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here

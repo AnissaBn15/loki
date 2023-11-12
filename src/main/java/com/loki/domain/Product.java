@@ -2,10 +2,14 @@ package com.loki.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.loki.domain.enumeration.ProductStatus;
+import org.hibernate.annotations.Formula;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
@@ -110,15 +114,21 @@ public class Product implements Serializable {
     @Column(name = "updated_by")
     private String updatedBy;
 
+    @Formula("(select count(c.id) from line_of_command c where c.product_id = id)")
+    private Integer nbrCommand = 0;
+
+
     @ManyToOne
     @JsonIgnoreProperties(value = { "commands", "paiements", "products" }, allowSetters = true)
     private Fournisseur fournisseur;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_category_id")
+    @ManyToOne
     @JsonIgnoreProperties(value = { "products" }, allowSetters = true)
     private ProductCategory productCategory;
 
+    @OneToMany(mappedBy = "product")
+    @JsonIgnoreProperties(value = { "product", "client", "panier", "command" }, allowSetters = true)
+    private Set<LineOfCommand> linesCommands = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -496,6 +506,45 @@ public class Product implements Serializable {
 
     public Product productCategory(ProductCategory productCategory) {
         this.setProductCategory(productCategory);
+        return this;
+    }
+
+    public Integer getNbrCommand() {
+        return nbrCommand;
+    }
+
+    public void setNbrCommand(Integer nbrCommand) {
+        this.nbrCommand = nbrCommand;
+    }
+
+    public Set<LineOfCommand> getLinesCommands() {
+        return this.linesCommands;
+    }
+
+    public void setLinesCommands(Set<LineOfCommand> lineOfCommands) {
+        if (this.linesCommands != null) {
+            this.linesCommands.forEach(i -> i.setProduct(null));
+        }
+        if (lineOfCommands != null) {
+            lineOfCommands.forEach(i -> i.setProduct(this));
+        }
+        this.linesCommands = lineOfCommands;
+    }
+
+    public Product linesCommands(Set<LineOfCommand> lineOfCommands) {
+        this.setLinesCommands(lineOfCommands);
+        return this;
+    }
+
+    public Product addLinesCommand(LineOfCommand lineOfCommand) {
+        this.linesCommands.add(lineOfCommand);
+        lineOfCommand.setProduct(this);
+        return this;
+    }
+
+    public Product removeLinesCommand(LineOfCommand lineOfCommand) {
+        this.linesCommands.remove(lineOfCommand);
+        lineOfCommand.setProduct(null);
         return this;
     }
 

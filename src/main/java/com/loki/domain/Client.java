@@ -84,6 +84,10 @@ public class Client implements Serializable {
     @JsonIgnoreProperties(value = { "linesCommands", "paiement", "client", "fournisseur" }, allowSetters = true)
     private Set<Command> commands = new HashSet<>();
 
+    @OneToMany(mappedBy = "client")
+    @JsonIgnoreProperties(value = { "product", "client", "panier", "command" }, allowSetters = true)
+    private Set<LineOfCommand> linesCommands = new HashSet<>();
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -340,6 +344,37 @@ public class Client implements Serializable {
     public Client removeCommands(Command command) {
         this.commands.remove(command);
         command.setClient(null);
+        return this;
+    }
+
+    public Set<LineOfCommand> getLinesCommands() {
+        return this.linesCommands;
+    }
+
+    public void setLinesCommands(Set<LineOfCommand> lineOfCommands) {
+        if (this.linesCommands != null) {
+            this.linesCommands.forEach(i -> i.setClient(null));
+        }
+        if (lineOfCommands != null) {
+            lineOfCommands.forEach(i -> i.setClient(this));
+        }
+        this.linesCommands = lineOfCommands;
+    }
+
+    public Client linesCommands(Set<LineOfCommand> lineOfCommands) {
+        this.setLinesCommands(lineOfCommands);
+        return this;
+    }
+
+    public Client addLinesCommand(LineOfCommand lineOfCommand) {
+        this.linesCommands.add(lineOfCommand);
+        lineOfCommand.setClient(this);
+        return this;
+    }
+
+    public Client removeLinesCommand(LineOfCommand lineOfCommand) {
+        this.linesCommands.remove(lineOfCommand);
+        lineOfCommand.setClient(null);
         return this;
     }
 

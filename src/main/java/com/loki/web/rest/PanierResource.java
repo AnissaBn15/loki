@@ -26,7 +26,7 @@ import tech.jhipster.web.util.ResponseUtil;
 /**
  * REST controller for managing {@link com.loki.domain.Panier}.
  */
-@RestController
+/*@RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class PanierResource {
@@ -54,7 +54,7 @@ public class PanierResource {
      * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new panierDTO, or with status {@code 400 (Bad Request)} if the panier has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PostMapping("/paniers")
+    /*@PostMapping("/paniers")
     public ResponseEntity<PanierDTO> createPanier(@RequestBody PanierDTO panierDTO) throws URISyntaxException {
         log.debug("REST request to save Panier : {}", panierDTO);
         if (panierDTO.getId() != null) {
@@ -65,18 +65,18 @@ public class PanierResource {
             .created(new URI("/api/paniers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
-    }
-    @PostMapping("/paniers/addToPanier/{id}/{quantity}")
+    }*/
+    /*@PostMapping("/paniers/addToPanier/{id}/{quantity}")
     public ResponseEntity<Void> addToPanier(Long clientId, @PathVariable Long id, @PathVariable int quantity) {
         panierService.createPanierForClient(id,quantity);
         return ResponseEntity.ok().build();
-    }
+    }*/
 
-    @DeleteMapping("/paniers/vider")
+    /*@DeleteMapping("/paniers/vider")
     public ResponseEntity<Void> viderPanier() {
         panierService.viderPanier();
         return ResponseEntity.ok().build();
-    }
+    }*/
     /**
      * {@code PUT  /paniers/:id} : Updates an existing panier.
      *
@@ -87,7 +87,7 @@ public class PanierResource {
      * or with status {@code 500 (Internal Server Error)} if the panierDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PutMapping("/paniers/{id}")
+    /*@PutMapping("/paniers/{id}")
     public ResponseEntity<PanierDTO> updatePanier(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody PanierDTO panierDTO
@@ -109,7 +109,7 @@ public class PanierResource {
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, panierDTO.getId().toString()))
             .body(result);
-    }
+    }*/
 
     /**
      * {@code PATCH  /paniers/:id} : Partial updates given fields of an existing panier, field will ignore if it is null
@@ -122,7 +122,7 @@ public class PanierResource {
      * or with status {@code 500 (Internal Server Error)} if the panierDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
-    @PatchMapping(value = "/paniers/{id}", consumes = { "application/json", "application/merge-patch+json" })
+    /*@PatchMapping(value = "/paniers/{id}", consumes = { "application/json", "application/merge-patch+json" })
     public ResponseEntity<PanierDTO> partialUpdatePanier(
         @PathVariable(value = "id", required = false) final Long id,
         @RequestBody PanierDTO panierDTO
@@ -153,13 +153,13 @@ public class PanierResource {
      * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of paniers in body.
      */
-    @GetMapping("/paniers")
+    /*@GetMapping("/paniers")
     public ResponseEntity<List<PanierDTO>> getAllPaniers(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         log.debug("REST request to get a page of Paniers");
         Page<PanierDTO> page = panierService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
-    }
+    }*/
 
     /**
      * {@code GET  /paniers/:id} : get the "id" panier.
@@ -167,12 +167,12 @@ public class PanierResource {
      * @param id the id of the panierDTO to retrieve.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the panierDTO, or with status {@code 404 (Not Found)}.
      */
-    @GetMapping("/paniers/{id}")
+    /*@GetMapping("/paniers/{id}")
     public ResponseEntity<PanierDTO> getPanier(@PathVariable Long id) {
         log.debug("REST request to get Panier : {}", id);
         Optional<PanierDTO> panierDTO = panierService.findOne(id);
         return ResponseUtil.wrapOrNotFound(panierDTO);
-    }
+    }*/
 
     /**
      * {@code DELETE  /paniers/:id} : delete the "id" panier.
@@ -180,7 +180,7 @@ public class PanierResource {
      * @param id the id of the panierDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
-    @DeleteMapping("/paniers/{id}")
+    /*@DeleteMapping("/paniers/{id}")
     public ResponseEntity<Void> deletePanier(@PathVariable Long id) {
         log.debug("REST request to delete Panier : {}", id);
         panierService.delete(id);
@@ -189,4 +189,4 @@ public class PanierResource {
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
             .build();
     }
-}
+}*/

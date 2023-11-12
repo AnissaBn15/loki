@@ -3,6 +3,7 @@ package com.loki.web.rest;
 import com.loki.repository.LineOfCommandRepository;
 import com.loki.service.LineOfCommandService;
 import com.loki.service.dto.LineOfCommandDTO;
+import com.loki.service.dto.ProductDTO;
 import com.loki.web.rest.errors.BadRequestAlertException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -55,7 +56,7 @@ public class LineOfCommandResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/line-of-commands")
-    public ResponseEntity<LineOfCommandDTO> createLineOfCommand(@RequestBody LineOfCommandDTO lineOfCommandDTO) throws URISyntaxException {
+    public ResponseEntity<LineOfCommandDTO> createLineOfCommand(@RequestBody LineOfCommandDTO lineOfCommandDTO, ProductDTO productDTO) throws URISyntaxException {
         log.debug("REST request to save LineOfCommand : {}", lineOfCommandDTO);
         if (lineOfCommandDTO.getId() != null) {
             throw new BadRequestAlertException("A new lineOfCommand cannot already have an ID", ENTITY_NAME, "idexists");

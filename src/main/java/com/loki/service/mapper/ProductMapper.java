@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Mapper for the entity {@link Product} and its DTO {@link ProductDTO}.
  */
 
-@Mapper(componentModel = "spring" ,uses = {ProductCategoryMapper.class})
+@Mapper(componentModel = "spring" ,uses = {ProductCategoryMapper.class, LineOfCommandMapper.class})
 public interface ProductMapper extends EntityMapper<ProductDTO, Product> {
     @Mapping(source = "product.id", target = "productCategoryId")
     ProductDTO toDto(Product product);

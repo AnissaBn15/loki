@@ -32,7 +32,7 @@ spring:
       indent-output: true
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:postgresql://localhost:5432/loki
+    url: jdbc:postgresql://localhost:5432/loki1
     username: postgres
     password: postgres
     hikari:
@@ -42,7 +42,7 @@ spring:
     database-platform: tech.jhipster.domain.util.FixedPostgreSQL10Dialect
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
-    contexts: dev
+    contexts: faker, dev
   mail:
     host: smtp.gmail.com
     port: 587
