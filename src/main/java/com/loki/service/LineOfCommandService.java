@@ -74,6 +74,7 @@ public class LineOfCommandService {
         //update product
         Product productUpdate = productRepository.findById(productId).get();
         productUpdate.setQuantityInStock(productUpdate.getQuantityInStock()- lineOfCommandDTO.getQuantity());
+        productUpdate.setNbrOfSells(productUpdate.getNbrOfSells() + lineOfCommand.getQuantity());
         productRepository.save(productUpdate);
         return lineOfCommandMapper.toDto(lineOfCommand);
     }
