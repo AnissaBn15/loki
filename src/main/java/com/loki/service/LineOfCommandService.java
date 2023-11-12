@@ -7,8 +7,12 @@ import com.loki.repository.ClientRepository;
 import com.loki.repository.LineOfCommandRepository;
 import com.loki.repository.ProductRepository;
 import com.loki.service.dto.LineOfCommandDTO;
+import com.loki.service.dto.ProductCategoryDTO;
+import com.loki.service.dto.ProductDTO;
 import com.loki.service.mapper.LineOfCommandMapper;
 import java.util.Optional;
+
+import com.loki.service.mapper.ProductMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -36,12 +40,15 @@ public class LineOfCommandService {
 
     private final ProductRepository productRepository;
 
+    private final ProductMapper productMapper;
 
-    public LineOfCommandService(LineOfCommandRepository lineOfCommandRepository, LineOfCommandMapper lineOfCommandMapper, ClientRepository clientRepository, ProductRepository productRepository) {
+
+    public LineOfCommandService(LineOfCommandRepository lineOfCommandRepository, LineOfCommandMapper lineOfCommandMapper, ClientRepository clientRepository, ProductRepository productRepository, ProductMapper productMapper) {
         this.lineOfCommandRepository = lineOfCommandRepository;
         this.lineOfCommandMapper = lineOfCommandMapper;
         this.clientRepository = clientRepository;
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
 
     /**
@@ -50,26 +57,26 @@ public class LineOfCommandService {
      * @param lineOfCommandDTO the entity to save.
      * @return the persisted entity.
      */
-    /*public LineOfCommandDTO save(LineOfCommandDTO lineOfCommandDTO) {
-        log.debug("Request to save LineOfCommand : {}", lineOfCommandDTO);
-        LineOfCommand lineOfCommand = lineOfCommandMapper.toEntity(lineOfCommandDTO);
-        lineOfCommand = lineOfCommandRepository.save(lineOfCommand);
-        return lineOfCommandMapper.toDto(lineOfCommand);
-    }*/
 
+    @Transactional
     public LineOfCommandDTO save(LineOfCommandDTO lineOfCommandDTO) {
         log.debug("Request to save LineOfCommand : {}", lineOfCommandDTO);
         LineOfCommand lineOfCommand = lineOfCommandMapper.toEntity(lineOfCommandDTO);
         Long clientId = lineOfCommandDTO.getClientId();
         Long productId = lineOfCommandDTO.getProductId();
-        Client client = clientRepository.findById(clientId).orElseThrow(() -> new EntityNotFoundException("Client not found"));
-        Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product not found"));
+        Client client = clientRepository.findById(clientId)
+            .orElseThrow(() -> new EntityNotFoundException("Client not found"));
+        Product product = productRepository.findById(productId)
+            .orElseThrow(() -> new EntityNotFoundException("Product not found"));
         lineOfCommand.setClient(client);
         lineOfCommand.setProduct(product);
         lineOfCommand = lineOfCommandRepository.save(lineOfCommand);
+        //update product
+        Product productUpdate = productRepository.findById(productId).get();
+        productUpdate.setQuantityInStock(productUpdate.getQuantityInStock()- lineOfCommandDTO.getQuantity());
+        productRepository.save(productUpdate);
         return lineOfCommandMapper.toDto(lineOfCommand);
     }
-
 
     /**
      * Update a lineOfCommand.

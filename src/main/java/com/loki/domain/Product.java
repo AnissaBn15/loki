@@ -2,6 +2,8 @@ package com.loki.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.loki.domain.enumeration.ProductStatus;
+import org.hibernate.annotations.Formula;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -111,6 +113,10 @@ public class Product implements Serializable {
 
     @Column(name = "updated_by")
     private String updatedBy;
+
+    @Formula("(select count(c.id) from line_of_command c where c.product_id = id)")
+    private Integer nbrCommand = 0;
+
 
     @ManyToOne
     @JsonIgnoreProperties(value = { "commands", "paiements", "products" }, allowSetters = true)
@@ -501,6 +507,14 @@ public class Product implements Serializable {
     public Product productCategory(ProductCategory productCategory) {
         this.setProductCategory(productCategory);
         return this;
+    }
+
+    public Integer getNbrCommand() {
+        return nbrCommand;
+    }
+
+    public void setNbrCommand(Integer nbrCommand) {
+        this.nbrCommand = nbrCommand;
     }
 
     public Set<LineOfCommand> getLinesCommands() {
