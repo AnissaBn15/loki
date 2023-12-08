@@ -48,40 +48,22 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        // @formatter:off
         http
             .csrf()
             .disable()
-            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
-            .exceptionHandling()
-                .authenticationEntryPoint(problemSupport)
-                .accessDeniedHandler(problemSupport)
-        .and()
+            .headers()
+            .frameOptions()
+            .disable()
+            .and()
             .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        .and()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
             .authorizeRequests()
-            .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-            .antMatchers("/swagger-ui/**").permitAll()
-            .antMatchers("/test/**").permitAll()
+            .antMatchers("/api/authenticate").permitAll() // Adjust this line as needed
             .antMatchers("/api/**").permitAll()
-            .antMatchers("/api/paniers/**").permitAll()
-            .antMatchers("/api/product-categories/**").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/account/reset-password/init").permitAll()
-            .antMatchers("/api/account/reset-password/finish").permitAll()
-            .antMatchers("/api/admin/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/management/health").permitAll()
-            .antMatchers("/management/health/**").permitAll()
-            .antMatchers("/management/info").permitAll()
-            .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-        .and()
-            .httpBasic()
-        .and()
+            .and()
             .apply(securityConfigurerAdapter());
+
         return http.build();
         // @formatter:on
     }

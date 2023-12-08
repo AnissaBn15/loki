@@ -16,9 +16,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import tech.jhipster.config.JHipsterProperties;
 
-/**
- * Configuration of web application with Servlet 3.0 APIs.
- */
+import java.util.Collections;
+
 @Configuration
 public class WebConfigurer implements ServletContextInitializer {
 
@@ -46,13 +45,10 @@ public class WebConfigurer implements ServletContextInitializer {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = jHipsterProperties.getCors();
-        if (!CollectionUtils.isEmpty(config.getAllowedOrigins()) || !CollectionUtils.isEmpty(config.getAllowedOriginPatterns())) {
-            log.debug("Registering CORS filter");
-            source.registerCorsConfiguration("/management/**", config);
-            source.registerCorsConfiguration("/v3/api-docs", config);
-            source.registerCorsConfiguration("/swagger-ui/**", config);
 
-        }
+        config.setAllowedOrigins(Collections.singletonList("*"));
+
+        source.registerCorsConfiguration("/api/**", config);
         return new CorsFilter(source);
     }
 }

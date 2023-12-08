@@ -87,6 +87,7 @@ public class AccountResource {
      * @param request the HTTP request.
      * @return the login if the user is authenticated.
      */
+    @CrossOrigin(origins = "*")
     @GetMapping("/authenticate")
     public String isAuthenticated(HttpServletRequest request) {
         log.debug("REST request to check if the current user is authenticated");

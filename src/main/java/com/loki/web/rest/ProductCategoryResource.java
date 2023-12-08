@@ -28,7 +28,6 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.loki.domain.ProductCategory}.
  */
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class ProductCategoryResource {
 

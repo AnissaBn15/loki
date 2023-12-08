@@ -30,7 +30,6 @@ import tech.jhipster.web.util.ResponseUtil;
  * REST controller for managing {@link com.loki.domain.Product}.
  */
 @RestController
-@CrossOrigin(origins = "*")
 @RequestMapping("/api")
 public class ProductResource {
 
@@ -183,6 +182,7 @@ public class ProductResource {
     @GetMapping("/best-selling")
     public ResponseEntity<List<ProductDTO>> getBestSellingProducts(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
         Page<ProductDTO> products = productService.getBestSellingProducts(pageable);
+
         return ResponseEntity.ok().body(products.getContent());
     }
 
